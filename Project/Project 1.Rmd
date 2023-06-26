@@ -9,22 +9,295 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+library(dbplyr)
+library(ggplot2)
+library(tidyverse)
+Data = read.csv(" ")
 ```
 
-## Including Plots
+Data 
 
-You can also embed plots, for example:
+This dataset contains information about one thousand diamonds available for sale on Blue Nile (http://www.bluenile.com), a renowned online diamond retailer. The data set encompasses various attributes of the diamonds, including carat weight, clarity, color, cut, and price. The data was collected from Blue Nile's website, capturing a diverse range of diamonds offered by the company.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+Blue Nile is a prominent online jewelry retailer specializing in diamonds and engagement rings. Established in 1999, it has become a trusted destination for customers seeking high-quality diamonds at competitive prices. Blue Nile offers a wide selection of certified diamonds sourced from reputable suppliers around the world. 
+
+Please note that while this data set primarily originates from Blue Nile, additional internet resources were utilized to complete it.
+
+Variables 
+
+1. Carat 
+
+Carat weight refers to the measurement of a diamond's mass, with one carat equivalent to 200 milligrams or 0.2 grams, and is often used as an indicator of a diamond's size or perceived value.
+
+- numeric (in grams)
+
+2. Clarity 
+
+Clarity of a diamond refers to the presence or absence of internal and external flaws. It is evaluated on a scale of various levels of clarity grades, impacting the diamond's overall visual appearance and value. Diamonds surface flaws are called blemishes, while internal defects are known as inclusions.
+
+- categorical 
+
+Levels: 
+- "FL"  are Flawless (FL) Diamonds - no internal or external characteristics - very rare
+- "IF" are Internally Flawless (IF) Diamonds - have no inclusions within the stone
+- "VVS1" and "VVS2" are Very, Very Slightly Included (VVS) Diamonds 
+- "VS1" and "VS2" are  Very Slightly Included (VS) Diamonds
+- "SI1" and "SI2" are Slightly Included (SI) Diamonds  
+
+3. Color 
+
+Color of a diamond refers to the presence or absence of any noticeable tint or hue within the stone. Diamond color is graded on a scale from D (colorless) to Z (light yellow or brown), with higher grades indicating a more colorless and desirable diamond.
+
+- categorical 
+
+Levels: "D" - Absolutely Colorless, "E" - Colorless, "F" - Colorless, "G" - Near Colorless,
+"H" - Near Colorless (faint yellow hue), "I" - Near Colorless (slight yellow), 
+"J" - Near Colorless (light yellow tone), "K" - Faint
+
+4. Cut 
+
+Cut of a diamond refers to the quality of how the diamond was shaped. A well-cut diamond reflects light very well, resulting in enhanced sparkle and a higher value, while a poorly cut diamond may appear dull and less captivating.
+
+- categorical
+
+Levels:
+- "Astor Ideal" - Cut from the finest raw material, crafted to gather and reflect the most light possible.
+
+- "Ideal" - 3% of diamond cut quality. It reflects most of the light that enters the diamond.
+
+- "Very Good" - 15% of diamond cut quality. It reflects nearly as much light as the ideal cut.
+
+- "Good" - 25% of diamond cut quality. It reflects most of the light that enters, but not as much as a Very Good cut grade.
+
+5. Price 
+
+The price of diamond. 
+
+- numeric (in dollars)
+
+
+```{r}
+Data$clarity = as.factor(Data$clarity)
+Data$color = as.factor(Data$color)
+Data$cut = as.factor(Data$cut)
+
+Data$clarity<-factor(Data$clarity, 
+                     levels=c("SI1","SI2","VS1","VS2","VVS1","VVS2", "IF","FL"))
+
+#levels(Data$clarity)
+
+Data$cut<-factor(Data$cut, 
+                     levels=c("Good", "Very Good", "Ideal","Astor Ideal"))
+
+#levels(Data$cut)
+
+Data$color<-factor(Data$color, 
+                     levels=c("K","J","I","H","G","F","E","D"))
+
+#levels(Data$color)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Graphs: 
+
+Clarity - Price 
+
+```{r}
+ggplot(Data, aes(x = price, y = clarity)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5, fill = "blue4", alpha = 0.7) +
+  labs(title = "Price by Clarity",
+       x = "Price",
+       y = "Clarity") +
+  scale_x_continuous(labels = scales::comma) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+```
+
+
+```{r}
+library(ggplot2)
+library(ggthemes)
+
+ggplot(Data, aes(x = clarity, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  labs(title = "Price Distribution by Clarity",
+       x = "Clarity",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+
+```
+
+
+```{r}
+ggplot(Data, aes(x = clarity, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  #geom_boxplot(fill = "blue4", alpha = 0.7, width = 0.5) +
+  geom_violin(fill = "blue4", alpha = 0.7, width = 0.5) +
+  labs(title = "Price Distribution by Clarity",
+       x = "Clarity",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+```
+
+
+```{r}
+avg_price_by_clarity <- Data %>%
+  group_by(clarity) %>%
+  summarise(avg_price = mean(price))
+
+ggplot(avg_price_by_clarity, aes(x = clarity, y = avg_price)) +
+  geom_bar(stat = "identity", fill = "blue4", alpha = 0.7) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  labs(title = "Average Price by Clarity",
+       x = "Clarity",
+       y = "Average Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+```
+
+
+Price vs Carat
+
+```{r}
+ggplot(Data, aes(x = carat, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  geom_smooth(method=lm,color="darkorange",alpha=0.5,se = FALSE)+
+  labs(title = "Price Distribution by Carat",
+       x = "Carat",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+```
+Price vs Cut
+
+```{r}
+ggplot(Data, aes(x = cut, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  labs(title = "Price Distribution by Cut",
+       x = "Cut",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+```
+
+```{r}
+
+avg_price_by_clarity2 <- Data %>%
+  group_by(cut) %>%
+  summarise(avg_price = mean(price))
+
+ggplot(avg_price_by_clarity2, aes(x = cut, y = avg_price)) +
+  geom_bar(stat = "identity", fill = "blue4", alpha = 0.7) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  labs(title = "Average Price by Cut",
+       x = "Cut",
+       y = "Average Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+```
+
+Price vs Color
+
+```{r}
+ggplot(Data, aes(x = color, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  labs(title = "Price Distribution by Color",
+       x = "Color",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+```
+
+```{r}
+avg_price_by_clarity3 <- Data %>%
+  group_by(color) %>%
+  summarise(avg_price = mean(price))
+
+ggplot(avg_price_by_clarity3, aes(x = color, y = avg_price)) +
+  geom_bar(stat = "identity", fill = "blue4", alpha = 0.7) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  labs(title = "Average Price by Color",
+       x = "Color",
+       y = "Average Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+```
+
+```{r}
+ggplot(Data, aes(x = price, y = color)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.5, fill = "blue4", alpha = 0.7) +
+  labs(title = "Price by Color",
+       x = "Price",
+       y = "Color") +
+  scale_x_continuous(labels = scales::comma) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+```
+
+
