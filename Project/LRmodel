@@ -6,6 +6,7 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
+Data <- read.csv("diamonds4.csv")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -38,7 +39,6 @@ par(mfrow = c(2, 2))
 plot(result)
 ```
 
-
 ```{r}
 MASS::boxcox(result,lambda = seq(-50, 50, 1))
 ```
@@ -46,7 +46,7 @@ MASS::boxcox(result,lambda = seq(-50, 50, 1))
 ```{r}
 ystar<-log(Data$price)
 Data<-data.frame(Data,ystar)
-result.ystar<-lm(ystar~price, data=Data)
+result.ystar<-lm(ystar~carat, data=Data)
 par(mfrow = c(2, 2))
 plot(result.ystar)
 ```
@@ -82,14 +82,6 @@ xstar<-log(Data$carat)
 Data<-data.frame(Data,xstar)
 result.xstar<-lm(ystar~xstar, data=Data)
 par(mfrow = c(2, 2))
-plot(result.ystar)
-```
-
-```{r}
-xstar<-log(Data$carat)
-Data<-data.frame(Data,xstar)
-result.xstar<-lm(ystar~xstar, data=Data)
-par(mfrow = c(2, 2))
 plot(result.xstar)
 ```
 
@@ -115,7 +107,7 @@ ggplot(Data, aes(x = xstar, y = ystar)) +
 MASS::boxcox(result.xstar,lambda = seq(-50, 50, 1))
 ```
 
-
 ```{r}
 summary(result.xstar)
 ```
+
