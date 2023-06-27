@@ -10,9 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-setwd ("/Users/alexaowen/Documents/Grad School/Summer 2023/STAT 6021/Project 1")
 Data <- read.csv("diamonds4.csv")
-head (Data)
 library (tidyverse)
 library(cowplot)
 ```
@@ -22,7 +20,11 @@ ggplot((Data) , aes(x=clarity, fill=cut))+
   geom_bar(position = "fill")+
   labs(x="Diamond Clarity", y="Proportion", 
        title="Proportion of Diamond Cuts by Diamond Clarity")
+
+clarity_cut <- table (Data$clarity, Data$cut)
+clarity_cut
 ```
+
 
 ```{r Carat vs. Price}
 
@@ -61,4 +63,6 @@ graph_2<- ggplot((carat_2), aes(x=carat, y=price))+
        title="Diamond Carat Against Price")
 
 plot_grid(graph_.5, graph_1, graph_1.5, graph_2, labes = "AUTO", nrow= 2, ncol = 2)
+
+cor(carat$price, carat$carat)
 ```
