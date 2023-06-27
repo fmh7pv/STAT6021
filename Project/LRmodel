@@ -137,7 +137,4 @@ MASS::boxcox(result.xstar,lambda = seq(-50, 50, 1))
 summary(result.xstar)
 ```
 
-```{r}
-summary(result.xstar)
-```
 
