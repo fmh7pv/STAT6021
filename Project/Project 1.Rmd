@@ -76,19 +76,18 @@ The price of diamond.
 
 - numeric (in dollars)
 
-6. carat.cat
+6. carat.cat c(-Inf, .4, .52, 1, Inf)
 
 The quartile that the diamond's corresponding carat value falls in comparison to the rest of the dataset.
 
 Levels:
-- "4th quartile"
+- "4th quartile" - Diamonds that fall in the top 25% in terms of carat value in the dataset. These diamonds were more than 1 carat.
 
-- "3rd quartile"
+- "3rd quartile" - Diamonds that fall in the top 50% in terms of carat value in the dataset. These diamonds were more than .52 carats and less than or equal to 1 carat.
 
-- "2nd quartile"
+- "2nd quartile" - Diamonds that fall in the top 75% in terms of carat value in the dataset. These diamonds were more than .4 carats and less than or equal to .52 carats.
 
-- "1st quartile"
-
+- "1st quartile" - - Diamonds that fall in the bottom 25% of carat value in the dataset. These diamonds were less than or equal to .4 carats.
 
 ```{r}
 Data$clarity = as.factor(Data$clarity)
