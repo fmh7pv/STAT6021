@@ -338,7 +338,7 @@ Data %>%
          title="Distribution of color in each cut")
 
 ```
-
+This bar graph answers the asummputation that "cut can influence diamond color". This asusmption is supported by the graph. Over 50% of diamonds in the highest cut, astro ideal contain diamonds with the highest color grade D, E, and F. 
 Color vs. Clarity
 ```{r}
 Data$color<-factor(Data$color, 
@@ -348,10 +348,11 @@ Data$color<-factor(Data$color,
 Data$clarity<-factor(Data$clarity, 
                      levels=c("SI1","SI2","VS1","VS2","VVS1","VVS2", "IF","FL"))
 Data %>%
-   ggplot(aes(x = color, fill = clarity))+ 
+   ggplot(aes(x = clarity, fill = color))+ 
    geom_bar(position = "fill") +
     theme(axis.text.x = element_text(angle = 0))+
     labs(x="Color", y="Percentage of Clarity in Each Color",
          title="Distribution of Clarity for each Color")
 
 ```
+This bar graph answers the assumption that "more colorless diamonds receiving higher grades along the diamond color and clarity scale". This assumption is supported by the graph. This plots shows that of the highest clarity Flawless (FL) is 66.67% of diamonds are in the color group D. Color group D is the best in that its absolutely colorless. 
