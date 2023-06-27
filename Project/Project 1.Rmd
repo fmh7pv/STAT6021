@@ -76,6 +76,19 @@ The price of diamond.
 
 - numeric (in dollars)
 
+6. carat.cat
+
+The quartile that the diamond's corresponding carat value falls in comparison to the rest of the dataset.
+
+Levels:
+- "4th quartile"
+
+- "3rd quartile"
+
+- "2nd quartile"
+
+- "1st quartile"
+
 
 ```{r}
 Data$clarity = as.factor(Data$clarity)
