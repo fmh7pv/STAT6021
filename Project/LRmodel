@@ -2,9 +2,13 @@
 title: "Linear Regression"
 author: "Karolina Straznikiewicz"
 date: "2023-06-27"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
 ---
 
+A simple linear regression model helps to further explore the relationship between the price of a diamond and the diamond's carat. The first step to fitting this model is to see if the relationship between the response variable (price of a diamond) and the predictor variable (the diamond's carat) meet the assumptions for a regression model without any transformations. To make this assessment, a scatter plot, residual plot and ACF plot are created.
 ```{r setup, include=FALSE}
 Data <- read.csv("diamonds4.csv")
 knitr::opts_chunk$set(echo = TRUE)
@@ -15,6 +19,7 @@ Simple Linear Regression
 1. 
 
 ```{r}
+library(ggplot2)
 ggplot(Data, aes(x = carat, y = price)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
@@ -38,10 +43,18 @@ result<-lm(price~carat, data=Data)
 par(mfrow = c(2, 2))
 plot(result)
 ```
+```{r}
+acf(result$residuals, main = "ACF of Residuals with No Transformations", ylim = c(-.2, .2))
+```
 
+The scatter plot and residual plot indicate that the errors do not have mean 0, do not have constant variance and are not normally distributed. In the "Residuals vs. Fitted" plot, the residuals are not evenly distributed across the horizontal axis. For fitted values less than 100,000, the majority of data points lie below the horizontal axis. Meanwhile, for fitted values over 100,000, the majority data points lie above the horizontal axis. Thus, the errors do not have mean 0. Additionally, the residuals do not have similar vertical variation in the "Residuals vs. Fitted" plot; instead, the variance increases as the fitted values increase. This leads to the conclusion that the errors do not have constant variance. The "Q-Q Residuals" has many data points far from the QQ line, indicating that the errors do not follow a normal distribution. On the other hand, the ACF plot shows that lags greater than zero are mostly insignificant. Therefore, there is no evidence that the data are dependent on each other.
+
+Since some regression assumptions are violated, a transformation on the data is necessary. The response variable should be transformed first, since the response variable affects the shape of the relationship and the vertical spread of the data points. 
 ```{r}
 MASS::boxcox(result,lambda = seq(0, 0.5, 0.1))
 ```
+
+The above box cox plot helps us identify our lambda value for the transformation. Since 1 does not lie in the confidence interval, it is confirmed that a transformation on the response variable is needed. 0 does not lie in the confidence interval, so a log transformation will not be performed initially. Instead, a lambda value of 0.3 is chosen since it lies near the center of the confidence interval.
 
 ```{r}
 ystar<-(Data$price)**.3
@@ -50,7 +63,6 @@ result.ystar<-lm(ystar~carat, data=Data)
 par(mfrow = c(2, 2))
 plot(result.ystar)
 ```
-
 
 ```{r}
 ggplot(Data, aes(x = carat, y = ystar)) +
@@ -69,6 +81,8 @@ ggplot(Data, aes(x = carat, y = ystar)) +
   theme(plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray")) 
 ```
+
+The transformation on the response variable with lambda = 0.3 does not resolve any of the assumption violations. In the "Residuals vs. Fitted" plot, the residuals remain unevenly distributed across the horizontal axis and the variance increases as the fitted values increase. Furthermore, the "Q-Q Residuals" plot has many data points far from the QQ line. Since this transformation has proven ineffective on its own, the first transformation on the data will be replaced by a log transformation. A log transformation on the response variable is preferred over the lambda = 0.3 transformation so that the estimated coefficients and slope can easily be interpreted. 
 ```{r}
 ystar<-log(Data$price)
 Data<-data.frame(Data,ystar)
@@ -94,8 +108,13 @@ ggplot(Data, aes(x = carat, y = ystar)) +
   theme(plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray")) 
 ```
+```{r}
+acf(result.ystar$residuals, main = "ACF of Residuals with No Transformations", ylim = c(-.2, .2))
+```
 
+As indicated by the scatter and residual plots, the log transformation on the response variable does not resolve all of the assumption violations either. The "Residual vs. Fitted" plot still displays unevenly distributed residuals across the horizontal axis. In addition, there are multiple data points far from the QQ line in the "Q-Q Residuals" plot. However, the variance remains relatively constant in the "Residuals vs. Fitted" plot. This indicates that the assumption that the errors have constant variance is met. Moreover, the ACF plot indicates that after the log transformation of the response variable, the data remains to appear independent.
 
+Another transformation on the data is necessary since not all of the assumptions have been met with the log transformation on the response variable. When the errors have constant variance but do not have a mean of 0, a transformation on the predictor helps find the appropriate shape to relate the variables. Because the approximate shape of the scatter plot is logarithmic, a log transformation will be performed on the predictor variable. 
 ```{r}
 MASS::boxcox(result,lambda = seq(-50, 50, 1))
 ```
@@ -127,13 +146,20 @@ ggplot(Data, aes(x = xstar, y = ystar)) +
   theme(plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray")) 
 ```
-
 ```{r}
-MASS::boxcox(result.xstar,lambda = seq(-50, 50, 1))
+acf(result.xstar$residuals, main = "ACF of Residuals with Log of Response and Log of Predictor Variables Transformations", ylim = c(-.2, .2))
+```
+
+After both the log transformations on the response and predictor variables, the scatter plot and residual plot indicate that the errors have mean 0, have constant variance and are normally distributed. The "Residuals vs. Fitted" plot shows that residuals are evenly distributed across the horizontal axis and that the residuals have similar vertical variation. In the "Q-Q Residuals" plot, most data points are close to the QQ line, indicating that the errors follow a normal distribution. The ACF plot shows that lags greater than zero are mostly insignificant, so the data can be assumed to be independent.
+```{r}
+MASS::boxcox(result.xstar,lambda =seq(0, 0.7, 0.1))
 ```
 
 
 ```{r}
+summary(result.xstar)
+```
+Referring to the transformations performed and the above summary of the regression model, the regression equation to estimate the price of a diamond $\hat{y}$ based on the carat of the diamond $x$ is $log(\hat{y}) = 1.94402log(x)+8.521208$. The scatter plot shows that as the carat of a diamond increases, so does the price of the diamond. The slope ($1.94402$) is greater than 1, indicating that as the carat of the diamond continues to increase, the price of the diamond increases as a faster rate. This means that the price per carat of the diamond tends to increase as the number of carats increases. Since there are few diamonds on the market over 2 carats, it makes sense that the rarity of diamonds over two carats would sell for a more expensive rate.
 summary(result.xstar)
 ```
 
