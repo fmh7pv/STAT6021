@@ -1,0 +1,64 @@
+---
+title: "Project 1_Alexa"
+author: "Alexa Owen"
+date: "2023-06-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd ("/Users/alexaowen/Documents/Grad School/Summer 2023/STAT 6021/Project 1")
+Data <- read.csv("diamonds4.csv")
+head (Data)
+library (tidyverse)
+library(cowplot)
+```
+
+```{r Clarity vs. Cut}
+ggplot((Data) , aes(x=clarity, fill=cut))+
+  geom_bar(position = "fill")+
+  labs(x="Diamond Clarity", y="Proportion", 
+       title="Proportion of Diamond Cuts by Diamond Clarity")
+```
+
+```{r Carat vs. Price}
+
+carat_.5 <- Data %>% 
+  filter(between(carat,.4,.6))
+
+carat_1 <- Data %>% 
+  filter(between(carat,.9,1.1))
+
+carat_1.5 <- Data %>% 
+  filter(between(carat,1.4,1.6))
+
+carat_2 <- Data %>% 
+  filter(between(carat,1.9,2.1))
+
+par(mfrow=c(2,2))
+
+graph_.5<- ggplot((carat_.5), aes(x=carat, y=price))+
+  geom_point(alpha = .5, color = "blue")+
+  labs(x="Carat (0.40-0.60)", y="Price", 
+       title="Diamond Carat Against Price")
+
+graph_1<- ggplot((carat_1), aes(x=carat, y=price))+
+  geom_point(alpha = .5, color = "blue")+
+  labs(x="Carat (0.90-1.10)", y="Price", 
+       title="Diamond Carat Against Price")
+
+graph_1.5<- ggplot((carat_1.5), aes(x=carat, y=price))+
+  geom_point(alpha = .5, color = "blue")+
+  labs(x="Carat (1.40-1.60)", y="Price", 
+       title="Diamond Carat Against Price")
+
+graph_2<- ggplot((carat_2), aes(x=carat, y=price))+
+  geom_point(alpha = .5, color = "blue")+
+  labs(x="Carat (1.90-2.10)", y="Price", 
+       title="Diamond Carat Against Price")
+
+plot_grid(graph_.5, graph_1, graph_1.5, graph_2, labes = "AUTO", nrow= 2, ncol = 2)
+```
