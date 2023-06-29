@@ -908,9 +908,6 @@ acf(result.ystar$residuals, main = "ACF of Residuals with Log Transformation of 
 
 As indicated by the scatter and residual plots, the log transformation on the response variable does not resolve all of the assumption violations either. The "Residual vs. Fitted" plot still displays unevenly distributed residuals across the horizontal axis. In addition, there are multiple data points far from the QQ line in the "Q-Q Residuals" plot. However, the variance remains relatively constant in the "Residuals vs. Fitted" plot. This indicates that the assumption that the errors have constant variance is met. Moreover, the ACF plot indicates that after the log transformation of the response variable, the data remains to appear independent.
 
-As indicated by the scatter and residual plots, the log transformation on the response variable does not resolve all of the assumption violations either. The "Residual vs. Fitted" plot still displays unevenly distributed residuals across the horizontal axis. In addition, there are multiple data points far from the QQ line in the "Q-Q Residuals" plot. However, the variance remains relatively constant in the "Residuals vs. Fitted" plot. This indicates that the assumption that the errors have constant variance is met. Moreover, the ACF plot indicates that after the log transformation of the response variable, the data remains to appear independent.
-
-
 ### Log x and y Transformed
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE}
