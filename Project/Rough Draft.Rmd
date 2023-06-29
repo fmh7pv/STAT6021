@@ -562,7 +562,7 @@ claim3plot1
     #     title="Distribution of color in each cut")
 ```
 
-This bar graph answers the asummputation that "cut can influence diamond color". This asusmption is supported by the graph. Over 50% of diamonds in the highest cut, astro ideal contain diamonds with the highest color grade D, E, and F. 
+This bar graph answers the assumption that "cut can influence diamond color". This assumption is supported by the graph. Over 50% of diamonds in the highest cut, astro ideal contain diamonds with the highest color grade D, E, and F. 
 
 ### 4. "more colorless diamonds receiving higher grades along the diamond color and clarity scale"
 
