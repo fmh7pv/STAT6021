@@ -572,8 +572,15 @@ claim3plot1
    # labs(x="Type of cut", y="Percentage of Color in Each Cut", 
     #     title="Distribution of color in each cut")
 ```
+### Proportion of color in each cut 
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+tab <- table(Data$cut, Data$color)
+round(prop.table(tab, 1) * 100, 2)
+```
 
-This bar graph answers the assumption that "cut can influence diamond color". This assumption is supported by the graph. Over 50% of diamonds in the highest cut, astro ideal contain diamonds with the highest color grade D, E, and F. 
+Blue Nile claims that cut can influence diamond color. In order to visualize this claim, a bar graph comparing cut against color and a proportion table were made. When looking at the graph, there is no distinct pattern of color in any category of cut. This claim is unable to be supported by the data presented. 
+
+
 
 ### 4. Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale.
 
@@ -603,8 +610,13 @@ claim4plot1
 #     labs(x="Color", y="Percentage of Clarity in Each Color",
 #          title="Distribution of Clarity for each Color")
 ```
+### Proportion of color in each clarity sclae
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+tab <- table(Data$clarity, Data$color)
+round(prop.table(tab, 1) * 100, 2)
+```
+Blue Nile claims that a more colorless diamond receives higher clarity scores. In order to visualize this claim, a bar graph comparing clarity against color and a proportion table were made. When looking at the graph, it shows that of the highest clarity Flawless (FL) is 100% of diamonds are in the colorless category. It drops when looking at the IF column but there is no distinct pattern of this decreasing when looking at other clarity scores. The claim is supported by the data presented. 
 
-This bar graph answers the assumption that "more colorless diamonds receive higher grades along the diamond color and clarity scale". This assumption is supported by the graph. This plots shows that of the highest clarity Flawless (FL) is 66.67% of diamonds are in the color group D. Color group D is the best in that its absolutely colorless. 
 
 ### 5. Blue Nile claims that diamond cut can hide flaws in other characteristics.
 
