@@ -1,3 +1,4 @@
+
 ---
 title: "STAT 6021: Project 1 - Report"
 author: 
@@ -870,10 +871,30 @@ aggregate_color <- aggregate(Data$price, list(Data$color), median)
 # Display the aggregated results with a formatted table
 t3 = kable(aggregate_color, col.names = c("Color", "Median Price"), align = "c")
 
-t1
-t2
-t3
+# t1 = aggregate(Data$price,        
+#           list(Data$cut),
+#           median)
+# 
+# t2 = aggregate(Data$price,        
+#           list(Data$clarity),
+#           median)
+# 
+# t3 = aggregate(Data$price,        
+#           list(Data$color),
+#           median)
+
 ```
+
+| Clarity | Median Price | Color | Median Price | Cut         | Median Price |
+|---------|--------------|-------|--------------|-------------|--------------|
+| SI1     | 1655         | J     | 1803         | Good        | 1903         |
+| SI2     | 1129         | I     | 1212         | Very Good   | 1744.5       |
+| VS1     | 1594         | H     | 1575         | Ideal       | 1354         |
+| VS2     | 1472         | G     | 1374         | Astor Ideal | 2854         |
+| VVS1    | 1392         | F     | 1485         |             |              |
+| VVS2    | 1389.5       | E     | 1602         |             |              |
+| IF      | 1427         | D     | 1781         |             |              |
+| FL      | 13733        |       |              |             |              |
 
 **Correlation of Price and Carat**
 
