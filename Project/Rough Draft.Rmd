@@ -520,7 +520,7 @@ claim2plot2 = ggplot(subset(Data, !is.na(carat.cat2)), aes(x=carat.cat2, fill=cl
 #ggplot(subset(Data, !is.na(carat.cat2)), aes(x=carat.cat2, fill=clarity))+
 #  geom_bar(position = "fill")+
 #  theme(plot.title = element_text(hjust = 0.5))+
-#  labs(x = "Clarity", y = "Proportion of Diamonds", title = "Diamond Clarity vs. Diamond Carat")
+#  labs(x = "Carat Quartile", y = "Proportion of Diamonds", title = "Diamond Clarity vs. Diamond Carat")
 
 patchwork6 = (claim2plot1 | claim2plot2)
 patchwork6 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
