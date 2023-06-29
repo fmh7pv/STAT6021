@@ -1,4 +1,3 @@
-
 ---
 title: "STAT 6021: Project 1 - Report"
 author: 
@@ -575,13 +574,7 @@ claim3plot1
     #     title="Distribution of color in each cut")
 ```
 
-#### Proportion of color in each cut 
-```{r,echo=FALSE, warning=FALSE, message=FALSE}
-tab <- table(Data$cut, Data$color)
-round(prop.table(tab, 1) * 100, 2)
-```
-
-This question was visualized using a bar plot comparing cut to color. When looking at the graph 60% of diamonds in the highest cut, astro ideal contain diamonds with the highest color grade D, E, and F. Other cuts contain a smaller portion of colorless diamonds. This claim is suported by the data
+This bar graph answers the assumption that "cut can influence diamond color". This assumption is supported by the graph. Over 50% of diamonds in the highest cut, astro ideal contain diamonds with the highest color grade D, E, and F. 
 
 ### 4. "more colorless diamonds receiving higher grades along the diamond color and clarity scale"
 
@@ -611,13 +604,8 @@ claim4plot1
 #     labs(x="Color", y="Percentage of Clarity in Each Color",
 #          title="Distribution of Clarity for each Color")
 ```
-#### Proportion of color in each clarity ranking  
-```{r,echo=FALSE, warning=FALSE, message=FALSE}
-tab <- table(Data$clarity, Data$color)
-round(prop.table(tab, 1) * 100, 2)
-```
 
-This claim was visualized using a bar plot comparing clarity to color. This plots shows that of the highest clarity Flawless (FL), 100% of diamonds are considered colorless. The other categories have a smaller percentage of colorless diamonds but in no distinict pattern. This claim that more coloress diamonds having higher clarity scores is supported by the graph. 
+This bar graph answers the assumption that "more colorless diamonds receiving higher grades along the diamond color and clarity scale". This assumption is supported by the graph. This plots shows that of the highest clarity Flawless (FL) is 66.67% of diamonds are in the color group D. Color group D is the best in that its absolutely colorless. 
 
 ### 5. "many diamond characteristics can be hidden by cut"
 
@@ -638,17 +626,28 @@ ggplot((Data) , aes(x=clarity, fill=cut))+
        title="Graph 9 \n Proportion of Diamond Cuts by Diamond Clarity")
 ```
 
-**(add label)**
 ```{r,echo=FALSE, warning=FALSE, message=FALSE}
 clarity_cut <- table (Data$clarity, Data$cut)
-clarity_cut
+#clarity_cut
 ```
 
 **(add label)**
 ```{r,echo=FALSE, warning=FALSE, message=FALSE}
 prop_clarity_cut <- round(prop.table(clarity_cut, 1) * 100, 2)
-prop_clarity_cut
+#prop_clarity_cut
 ```
+
+|Table 1 | Good | Very Good | Ideal | Astor Ideal |Table 2 | Good | Very Good | Ideal | Astor Ideal |
+|--------|------|-----------|-------|-------------|--------|------|-----------|-------|-------------|
+| SI1    | 19   | 70        | 150   | 4           | SI1    | 7.82 | 28.81     | 61.73 | 1.65        |
+| SI2    | 14   | 64        | 86    | 1           | SI2    | 8.48 | 38.79     | 52.12 | 0.61        |
+| VS1    | 13   | 78        | 136   | 6           | VS1    | 5.58 | 33.48     | 58.37 | 2.58        |
+| VS2    | 13   | 65        | 131   | 5           | VS2    | 6.07 | 30.37     | 61.21 | 2.34        |
+| VVS1   | 7    | 42        | 99    | 1           | VVS1   | 4.7  | 28.19     | 66.44 | 0.67        |
+| VVS2   | 6    | 50        | 99    | 3           | VVS2   | 3.8  | 31.65     | 62.66 | 1.9         |
+| IF     | 1    | 11        | 37    | 0           | IF     | 2.04 | 22.45     | 75.51 | 0           |
+| FL     | 0    | 2         | 1     | 0           | FL     | 0    | 66.67     | 33.33 | 0           |
+
 The website claims that many diamond characteristics can be hidden by cut. To test this claim, diamond cut was analyzed against diamond clarity. From Blue Nile's claim, the quality of the diamond cut should be higher in diamonds with lower clarity. According to the website, the clarity ratings from lowest to highest in the data set are SI2, SI1, VVS2, VVS1, VS2, VS1, IF, FL. Furthermore, the ratings can be grouped together as SI, VS, VVS, IF and FL. Additionally, the cut quality from low to high is Good, Very Good, Ideal, Astor Ideal. Based on these rankings and the claim, we should expect to see lower clarity ratings (SI and VS) associated with higher cut quality. From the bar chart we can see that the FL clarity rating only contained the diamond cuts Very Good and Ideal. The second highest clarity rating contained Good, Very Good, and Ideal diamond cuts. The clarity ratings SI2 to VS1 contained diamonds with all four cuts.
 
 From the bar chart this claim appears to be supported by the data. For the purpose of looking at this data the Astor Ideal cut is going to be ignored in the discussion as there were not many diamond purchases with this cut giving very little data. For the SI2 clarity, 52.12% of the cuts were Ideal which is the second highest cut ranking overall. Except for the Astor Ideal cut, the Good cut had the lowest percentage at 8.48%. The SI1 clarity showed similar results with, 61.73% of the cuts being Idea and the cut of Good had the lowest percentage at 7.82%. For VS2, the Ideal cut was highest at 61.21% and Good was lowest at 6.07. Finally, the VS1 cut had the highest percentage of Ideal cuts at 58.37% and the Good cut was the lowest at 5.58%. From these proportions, the claim that better diamond cuts hide imperfections in the diamond appears to be true. 
@@ -1073,6 +1072,11 @@ summary(result.xstar)
 In order to create an appropriate linear model and not violate assumptions, the $x$ and $y$ variables both had to be transformed.
 
 Referring to the transformations performed and the above summary of the regression model, the regression equation to estimate the price of a diamond $\hat{y}$ based on the carat of the diamond $x$ is $log(\hat{y}) = 1.94402log(x)+8.521208$. The scatter plot shows that as the carat of a diamond increases, so does the price of the diamond. The slope ($1.94402$) is greater than 1, indicating that as the carat of the diamond continues to increase, the price of the diamond increases as a faster rate. This means that the price per carat of the diamond tends to increase as the number of carats increases. Since there are few diamonds on the market over 2 carats, it makes sense that the rarity of diamonds over two carats would sell for a more expensive rate.
+
+This can further confirmed as the p-value for the value x.star. It is much smaller than 0.05, meaning that the null hypothesis of the slope being zero or insignificant, contextually that carat as no affect on price, is rejected. The alternative hypothesis that the slope isn’t zero or that carat does have an affect on price is accepted. 
+
+
+
 
 
 
