@@ -543,6 +543,12 @@ patchwork6 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
 
+#### Proportion of color in each cut 
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+tab <- table(Data$cut, Data$color)
+round(prop.table(tab, 1) * 100, 2)
+```
+
 Blue Nile claims that as you go up in carat weight, other characteristics become more visible, implying that diamonds of a higher carat weight, the more obvious are any blemmishes. Therefore, one can assume that buyers and sellers prioritize high clarity for diamonds of a higher carat. Graph 6 shows that of diamonds with the highest clarity, Flawless (FL), over 50% were in the highest carat quartile as well.  However, in all other categories, there is no distinct difference in the distribution of carat and level of clarity. This leads to the hypothesis that for a diamond's carat to have an effect on its clarity, the diamond needs to be over 1 carat. 
 
 ### 3. "cut can influence diamond color"
@@ -574,7 +580,12 @@ claim3plot1
     #     title="Distribution of color in each cut")
 ```
 
-This bar graph answers the assumption that "cut can influence diamond color". This assumption is supported by the graph. Over 50% of diamonds in the highest cut, astro ideal contain diamonds with the highest color grade D, E, and F. 
+#### Proportion of color in each cut 
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+tab <- table(Data$cut, Data$color)
+round(prop.table(tab, 1) * 100, 2)
+```
+Blue Niile claims that the cut of the diamond can influence the color of the diamond. In order to visualise this claim a bar graph was made to compare cut against color. Also a proportion table was made to see the percantages of color in each cut. There is no distinct pattern of cuts determining what color the ring is. This claim does not hold weight as coloreless diamonds (D, E, and F) being the majority of each and every caterogy of cut in this table. 
 
 ### 4. "more colorless diamonds receiving higher grades along the diamond color and clarity scale"
 
@@ -605,7 +616,13 @@ claim4plot1
 #          title="Distribution of Clarity for each Color")
 ```
 
-This bar graph answers the assumption that "more colorless diamonds receiving higher grades along the diamond color and clarity scale". This assumption is supported by the graph. This plots shows that of the highest clarity Flawless (FL) is 66.67% of diamonds are in the color group D. Color group D is the best in that its absolutely colorless. 
+#### Proportion of color in each clarity scale  
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+tab <- table(Data$clarity, Data$color)
+round(prop.table(tab, 1) * 100, 2)
+```
+
+Blue Niile claims that the color of the diamond recieve higher clarity scores.In order to visualise this claim a bar graph was made to compare clarity against color. Also a proportion table was made to see the percantages of color in each clarity scale.  This plots shows that of the highest clarity Flawless (FL) is 100% made up colorless diamonds (D and E). It drops in the next clarity scale but overall does not drop in a distinict pattern. This visualise and the proportion table support the claim. 
 
 ### 5. "many diamond characteristics can be hidden by cut"
 
