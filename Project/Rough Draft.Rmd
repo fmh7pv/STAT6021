@@ -66,7 +66,7 @@ This report aims to investigate the relationship between carat weight and the av
     + "4th quartile" - Diamonds that fall in the top 25% in terms of carat value in the data set. These diamonds were more than 1 carat.
     + "3rd quartile" - Diamonds that fall in the top 50% in terms of carat value in the data set. These diamonds were more than .52 carats and less than or equal to 1 carat.
     + "2nd quartile" - Diamonds that fall in the top 75% in terms of carat value in the data set. These diamonds were more than .4 carats and less than or equal to .52 carats.
-    + "1st quartile" - - Diamonds that fall in the bottom 25% of carat value in the data set. These diamonds were less than or equal to .4 carats.
+    + "1st quartile" - Diamonds that fall in the bottom 25% of carat value in the data set. These diamonds were less than or equal to .4 carats.
   
 + **clarity** (categorical) 
   + Clarity of a diamond refers to the presence or absence of internal and external flaws. It is evaluated on a scale of various levels of clarity grades, impacting the diamond's overall visual appearance and value. Diamonds surface flaws are called blemishes, while internal defects are known as inclusions.
