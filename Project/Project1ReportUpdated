@@ -489,7 +489,7 @@ patchwork5 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
 
-### 2. "as you go up in carat weight, other characteristics become more visible"
+### 2. Blue Nile claims that as carat weight increases, other characteristics become more visible.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4,fig.align='center'}
 
@@ -543,9 +543,9 @@ patchwork6 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
 
-Blue Nile claims that as you go up in carat weight, other characteristics become more visible, implying that diamonds of a higher carat weight, the more obvious are any blemmishes. Therefore, one can assume that buyers and sellers prioritize high clarity for diamonds of a higher carat. Graph 6 shows that of diamonds with the highest clarity, Flawless (FL), over 50% were in the highest carat quartile as well.  However, in all other categories, there is no distinct difference in the distribution of carat and level of clarity. This leads to the hypothesis that for a diamond's carat to have an effect on its clarity, the diamond needs to be over 1 carat. 
+Blue Nile claims that as you go up in carat weight, other characteristics become more visible, implying that diamonds of higher carat weight, are the more obvious blemishes. Therefore, one can assume that buyers and sellers prioritize high clarity for diamonds of a higher carat. Graph 6 shows that of diamonds with the highest clarity, Flawless (FL), over 50% were in the highest carat quartile as well.  However, in all other categories, there is no distinct difference in the distribution of carat and level of clarity. This leads to the hypothesis that for a diamond's carat to have an effect on its clarity, the diamond needs to be over 1 carat. 
 
-### 3. "cut can influence diamond color"
+### 3. The company claims that diamond cut influences diamond color.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
 
@@ -576,7 +576,7 @@ claim3plot1
 
 This bar graph answers the assumption that "cut can influence diamond color". This assumption is supported by the graph. Over 50% of diamonds in the highest cut, astro ideal contain diamonds with the highest color grade D, E, and F. 
 
-### 4. "more colorless diamonds receiving higher grades along the diamond color and clarity scale"
+### 4. Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
 
@@ -605,9 +605,9 @@ claim4plot1
 #          title="Distribution of Clarity for each Color")
 ```
 
-This bar graph answers the assumption that "more colorless diamonds receiving higher grades along the diamond color and clarity scale". This assumption is supported by the graph. This plots shows that of the highest clarity Flawless (FL) is 66.67% of diamonds are in the color group D. Color group D is the best in that its absolutely colorless. 
+This bar graph answers the assumption that "more colorless diamonds receive higher grades along the diamond color and clarity scale". This assumption is supported by the graph. This plots shows that of the highest clarity Flawless (FL) is 66.67% of diamonds are in the color group D. Color group D is the best in that its absolutely colorless. 
 
-### 5. "many diamond characteristics can be hidden by cut"
+### 5. Blue Nile claims that diamond cut can hide flaws in other characteristics.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
 ggplot((Data) , aes(x=clarity, fill=cut))+
@@ -631,7 +631,8 @@ clarity_cut <- table (Data$clarity, Data$cut)
 #clarity_cut
 ```
 
-**(add label)**
+***Table 1. Count of diamond clarity for each type of cut, Table 2. Percent of diamond clarity for each type of cut***
+
 ```{r,echo=FALSE, warning=FALSE, message=FALSE}
 prop_clarity_cut <- round(prop.table(clarity_cut, 1) * 100, 2)
 #prop_clarity_cut
@@ -650,10 +651,10 @@ prop_clarity_cut <- round(prop.table(clarity_cut, 1) * 100, 2)
 
 The website claims that many diamond characteristics can be hidden by cut. To test this claim, diamond cut was analyzed against diamond clarity. From Blue Nile's claim, the quality of the diamond cut should be higher in diamonds with lower clarity. According to the website, the clarity ratings from lowest to highest in the data set are SI2, SI1, VVS2, VVS1, VS2, VS1, IF, FL. Furthermore, the ratings can be grouped together as SI, VS, VVS, IF and FL. Additionally, the cut quality from low to high is Good, Very Good, Ideal, Astor Ideal. Based on these rankings and the claim, we should expect to see lower clarity ratings (SI and VS) associated with higher cut quality. From the bar chart we can see that the FL clarity rating only contained the diamond cuts Very Good and Ideal. The second highest clarity rating contained Good, Very Good, and Ideal diamond cuts. The clarity ratings SI2 to VS1 contained diamonds with all four cuts.
 
-From the bar chart this claim appears to be supported by the data. For the purpose of looking at this data the Astor Ideal cut is going to be ignored in the discussion as there were not many diamond purchases with this cut giving very little data. For the SI2 clarity, 52.12% of the cuts were Ideal which is the second highest cut ranking overall. Except for the Astor Ideal cut, the Good cut had the lowest percentage at 8.48%. The SI1 clarity showed similar results with, 61.73% of the cuts being Idea and the cut of Good had the lowest percentage at 7.82%. For VS2, the Ideal cut was highest at 61.21% and Good was lowest at 6.07. Finally, the VS1 cut had the highest percentage of Ideal cuts at 58.37% and the Good cut was the lowest at 5.58%. From these proportions, the claim that better diamond cuts hide imperfections in the diamond appears to be true. 
+From the bar chart, this claim appears to be supported by the data. For the purpose of looking at this data, the Astor Ideal cut is going to be ignored in the discussion as there were not many diamond purchases with this cut giving very little data. For the SI2 clarity, 52.12% of the cuts were Ideal which is the second highest cut ranking overall. Except for the Astor Ideal cut, the Good cut had the lowest percentage at 8.48%. The SI1 clarity showed similar results with, 61.73% of the cuts being Idea and the cut of Good had the lowest percentage at 7.82%. For VS2, the Ideal cut was highest at 61.21% and Good was lowest at 6.07. Finally, the VS1 cut had the highest percentage of Ideal cuts at 58.37% and the Good cut was the lowest at 5.58%. From these proportions, the claim that better diamond cuts hide imperfections in the diamond appears to be true. 
 
 
-### 6. "diamond carat weights that are slightly less (0.4, 0.9, 1.4, 1.9) than typical carat values (0.5, 1.0, 1.5, or 2.0) cost less than getting a normal carat weight"
+### 6. The claim Blue Nile makes is that diamond carat weights that are slightly less (0.4, 0.9, 1.4, 1.9) than typical carat values (0.5, 1.0, 1.5, or 2.0) cost less than getting a normal carat weight.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE}
 carat_.5 <- Data %>% 
@@ -733,7 +734,7 @@ patchwork7 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
 
 The claim Blue Nile makes is that diamond carat weights that are slightly less (0.4, 0.9, 1.4, 1.9) than typical carat values (0.5, 1.0, 1.5, or 2.0) cost less than getting a normal carat weight. From the data this claim is best supported by lower carat weights such as a half of a carat and a carat. The top two graphs show that a diamond with a carat weight of 0.4 does appear to have a lower cost than diamonds with a carat weight of 0.5. This is further displayed by the second graph which shows a similar trend. The carat weight of 0.9 appears to have a lower price than a carat weight of 1.0. As the carat value continues to increase it becomes more difficult to make assumptions from the graph because there are fewer data points. Therefore for diamonds with a carat value greater than 1.0, it is difficult to see if the data actually supports Blue Nile's claim. As a result, we can say that we can assume their claim appears to be supported for carat values of 1.0 or less, but is inconclusive at higher carat weights. 
 
-### 7. "diamond cut drives the price of the diamond"
+### 7. The main claim made by Blue Nile is that diamond cut drives the price of the diamond.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
 
@@ -858,7 +859,7 @@ patchwork8 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
 
-**Median Price of Cut, Clarity and Color**
+**Median Price of Cut, Clarity, and Color**
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,results='asis'}
 library(knitr)
@@ -949,9 +950,9 @@ plot(result)
 acf(result$residuals, main = "ACF of Residuals with No Transformations", ylim = c(-.2, .2))
 ```
 
-The scatter plot and residual plot indicate that the errors do not have mean 0, do not have constant variance and are not normally distributed. In the "Residuals vs. Fitted" plot, the residuals are not evenly distributed across the horizontal axis. For fitted values less than 100,000, the majority of data points lie below the horizontal axis. Meanwhile, for fitted values over 100,000, the majority data points lie above the horizontal axis. Thus, the errors do not have mean 0. Additionally, the residuals do not have similar vertical variation in the "Residuals vs. Fitted" plot; instead, the variance increases as the fitted values increase. This leads to the conclusion that the errors do not have constant variance. The "Q-Q Residuals" has many data points far from the QQ line, indicating that the errors do not follow a normal distribution. On the other hand, the ACF plot shows that lags greater than zero are mostly insignificant. Therefore, there is no evidence that the data are dependent on each other.
+The scatter plot and residual plot indicate that the errors do not have a mean of 0, do not have constant variance, and are not normally distributed. In the "Residuals vs. Fitted" plot, the residuals are not evenly distributed across the horizontal axis. For fitted values less than 100,000, the majority of data points lie below the horizontal axis. Meanwhile, for fitted values over 100,000, the majority of data points lie above the horizontal axis. Thus, the errors do not have a mean of 0. Additionally, the residuals do not have similar vertical variation in the "Residuals vs. Fitted" plot; instead, the variance increases as the fitted values increase. This leads to the conclusion that the errors do not have constant variance. The "Q-Q Residuals" has many data points far from the QQ line, indicating that the errors do not follow a normal distribution. On the other hand, the ACF plot shows that lags greater than zero are mostly insignificant. Therefore, there is no evidence that the data are dependent on each other.
 
-Since some regression assumptions are violated, a transformation on the data is necessary. The response variable should be transformed first, since the response variable affects the shape of the relationship and the vertical spread of the data points. 
+Since some regression assumptions are violated, a transformation of the data is necessary. The response variable should be transformed first since the response variable affects the shape of the relationship and the vertical spread of the data points. 
 
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center',fig.height = 3.5}
@@ -1058,7 +1059,7 @@ plot(result.xstar)
 acf(result.xstar$residuals, main = "ACF LogResponse ~ LogPredictor", ylim = c(-.2, .2))
 ```
 
-After both the log transformations on the response and predictor variables, the scatter plot and residual plot indicate that the errors have mean 0, have constant variance and are normally distributed. The "Residuals vs. Fitted" plot shows that residuals are evenly distributed across the horizontal axis and that the residuals have similar vertical variation. In the "Q-Q Residuals" plot, most data points are close to the QQ line, indicating that the errors follow a normal distribution. The ACF plot shows that lags greater than zero are mostly insignificant, so the data can be assumed to be independent.
+After both the log transformations on the response and predictor variables, the scatter plot and residual plot indicate that the errors have a mean of 0, have constant variance and are normally distributed. The "Residuals vs. Fitted" plot shows that residuals are evenly distributed across the horizontal axis and that the residuals have similar vertical variation. In the "Q-Q Residuals" plot, most data points are close to the QQ line, indicating that the errors follow a normal distribution. The ACF plot shows that lags greater than zero are mostly insignificant, so the data can be assumed to be independent.
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center',fig.height = 3.5}
 MASS::boxcox(result.xstar,lambda =seq(0, 0.7, 0.1))
 ```
@@ -1073,7 +1074,7 @@ In order to create an appropriate linear model and not violate assumptions, the 
 
 Referring to the transformations performed and the above summary of the regression model, the regression equation to estimate the price of a diamond $\hat{y}$ based on the carat of the diamond $x$ is $log(\hat{y}) = 1.94402log(x)+8.521208$. The scatter plot shows that as the carat of a diamond increases, so does the price of the diamond. The slope ($1.94402$) is greater than 1, indicating that as the carat of the diamond continues to increase, the price of the diamond increases as a faster rate. This means that the price per carat of the diamond tends to increase as the number of carats increases. Since there are few diamonds on the market over 2 carats, it makes sense that the rarity of diamonds over two carats would sell for a more expensive rate.
 
-This can further confirmed as the p-value for the value x.star. It is much smaller than 0.05, meaning that the null hypothesis of the slope being zero or insignificant, contextually that carat as no affect on price, is rejected. The alternative hypothesis that the slope isn’t zero or that carat does have an affect on price is accepted. 
+This can be further confirmed as the p-value for the value x.star. It is much smaller than 0.05, meaning that the null hypothesis of the slope being zero or insignificant, contextually that carat as no affect on price, is rejected. The alternative hypothesis that the slope isn’t zero or that carat does have an affect on price is accepted. 
 
 
 
