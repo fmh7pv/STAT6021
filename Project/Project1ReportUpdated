@@ -529,7 +529,7 @@ ggplot(subset(Data, !is.na(carat)), aes(x=carat, y=price, color = clarity))+
   theme(#plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray"))
 ```
-Graph # shows that as the carat value increases, so does price. However, as clarity does not appear to have a consistent trend with price and carat value. This is consistent with Graph 1, where clarity and price do not have a strong association. The only exception to this is with the highest clarity, FL, which also is consistent with the findings in Graph 6. Therefore, clarity does not have a strong relationship with carat or price, unless the clarity is FL.
+Graph # shows that as the carat value increases, so does price. However, as clarity does not appear to have a consistent trend with price and carat value. This is consistent with Graph 1, where clarity and price do not have a strong association, except when the clarity is FL, like Graph 6. Therefore, clarity does not have a strong relationship with carat or price, unless the clarity is FL.
 #ggplot(subset(Data, !is.na(carat.cat2)), aes(x=carat.cat2, fill=clarity))+
 #  geom_bar(position = "fill")+
 #  theme(plot.title = element_text(hjust = 0.5))+
