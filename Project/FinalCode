@@ -53,7 +53,7 @@ Please note that while this data set primarily originates from **Blue Nile**, ad
 
 ### Variables
 
-This report aims to investigate the relationship between carat weight and the average price per diamond. The data set used consists of observations on various diamonds, with each observation representing a single diamond. The objective is to determine how carat weight influences the pricing of diamonds. 
+This report aims to investigate the relationship between diamond characteristics and the average price per diamond. In addition, the study focuses on the relationship between diamond chracteristics. The data set used consists of observations on various diamonds, with each observation representing a single diamond. 
 
 + ***price*** (numeric in dollars) - **Response variable in regression question** 
   + The price of a diamond
@@ -127,6 +127,9 @@ Data <- Data %>%
   mutate(carat.cat = cut(carat, breaks =c(-Inf, .4, .52, 1, Inf), labels = c("1st Quartile", "2nd Quartile", "3rd Quartile", "4th Quartile")))
 ```
 
+To complete this analysis, the graphs in Figures 1, 2, 3 and 4 display the distribution of diamonds by clarity, cut, color and carat, respectively. The variety of metrics in the graphs (count, price, average price and median price) provides comprehensive insight into how (if at all) the diamond characteristic and price are related.
+
+The first diamond characteristic's effect on price to be analyzed is clarity. 
 
 ### Price by Clarity 
 
@@ -208,6 +211,8 @@ After analyzing Graph 1, it is evident that there are no clear trends indicating
 
 This finding suggests that while clarity plays a role in determining a diamond's price, it may not be the sole influential factor. 
 
+Next, Figure 2 provides into the relationship between diamond cut and price.
+
 ### Price by Cut
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
@@ -286,6 +291,8 @@ patchwork2 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
 The analysis of Graph 2 reveals interesting findings regarding the cut of diamonds. It is noteworthy that the majority of diamonds available for sale on the website were classified as having an ideal cut. Surprisingly, as the cut quality progresses from good to very good, ideal, and Astor Ideal, the average and median prices show a decreasing trend. However, there is one exception to this pattern, with Astor Ideal diamonds having the highest median price among all cuts (but only a few observations in data set).
 Upon examining the scatterplot, it becomes evident that a significant number of diamonds cluster within the price range of 0 to 50k dollars. However, it is interesting to note that there are instances of individual diamonds with better cuts that have substantially higher prices. While the majority of diamonds fall within a certain price range, diamonds with superior cuts can command significantly higher prices. The relationship between cut and prices should be further investigated to determine if cut is indeed an important predictor, or is it a mix of cut and other diamond characteristics. 
 
+The next diamond characteristic's effect on price to be studied is price.
+
 ### Price by Color
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
@@ -363,6 +370,8 @@ patchwork3 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
 ```
 
 The analysis of Graph 3 reveals a notable trend regarding the color of diamonds and its impact on pricing. There is a clear rising pricing trend as the color of diamonds improves. This suggests that consumers are willing to pay more for diamonds with better color grades, which typically exhibit a higher level of colorlessness. Similar to previous observations, a significant number of diamonds cluster within the 0 to 50k price range. This finding aligns with the understanding that most buyers have a budget or a general price range in mind when purchasing a diamond for an engagement ring. Both the average and median prices for diamonds increase as the color grade improves. This indicates that color plays a substantial role in determining the value and price of a diamond. However, there is one exception to this trend, namely the J-color category. Diamonds with a J-color grade have a surprisingly high median price. This observation suggests that individuals may be willing to sacrifice color in favor of obtaining a larger stone size while still managing to save money.
+
+Finally, Figure 4 displays the effect that carat has on price.
 
 ### Price by Carat
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
@@ -444,7 +453,7 @@ patchwork4 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
 
 The analysis of Graph 4 reveals a clear and significant rising trend between the carat weight of diamonds and their prices. As the number of carats increases, the pricing also increases, indicating that diamond buyers are willing to pay more for larger stones. Consistently, the heaviest diamonds in terms of carat weight exhibit substantially higher prices compared to smaller diamonds. This finding aligns with the understanding that larger diamonds are rarer and more coveted, leading to a higher market value. The data set also reveals that most diamonds purchased by buyers are within the range of 0 to 2 carats, indicating a common preference (or financial restraint) for diamonds of this size. These findings emphasize the significant impact of carat weight on diamond pricing.
 
-## Claims
+## Investigation of Blue Nile's Claims
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4,fig.align='center'}
 # claimplot1 = ggplot(Data, aes(x = color, y = carat, fill = color)) +
@@ -487,7 +496,7 @@ The analysis of Graph 4 reveals a clear and significant rising trend between the
 #         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
 
-### 1. Blue Nile claims that as carat weight increases, other characteristics become more visible.
+Blue Nile claims that as you go up in carat weight, other characteristics become more visible, implying that diamonds of higher carat weight, blemishes become more obvious. Therefore, one can assume that buyers and sellers prioritize high clarity for diamonds of a higher carat. We investigate this claim in Figure .
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4,fig.align='center'}
 
@@ -543,7 +552,7 @@ claim2plot1
 #         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
 
-Blue Nile claims that as you go up in carat weight, other characteristics become more visible, implying that diamonds of higher carat weight, are the more obvious blemishes. Therefore, one can assume that buyers and sellers prioritize high clarity for diamonds of a higher carat. Graph 6 shows that of diamonds with the highest clarity, Flawless (FL), over 50% were in the highest carat quartile as well.  However, in all other categories, there is no distinct difference in the distribution of carat and level of clarity. This leads to the hypothesis that for a diamond's carat to have an effect on its clarity, the diamond needs to be over 1 carat. 
+ Graph 6 shows that of diamonds with the highest clarity, Flawless (FL), over 50% were in the highest carat quartile as well.  However, in all other categories, there is no distinct difference in the distribution of carat and level of clarity. This leads to the hypothesis that for a diamond's carat to have an effect on its clarity, the diamond needs to be over 1 carat. 
 
 Graph 6 shows that as the carat value increases, so does price. However, as clarity does not appear to have a consistent trend with price and carat value. This is consistent with Graph 1, where clarity and price do not have a strong association, except when the clarity is FL, like Graph 6. Therefore, clarity does not have a strong relationship with carat or price, unless the clarity is FL.
 
