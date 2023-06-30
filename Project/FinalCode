@@ -1,0 +1,1149 @@
+---
+title: "STAT 6021: Project 1 - Report"
+author: 
+ - 'Group 10: Alexa Owen (amo9f), Karolina Straznikiewicz (ssj9sw)'
+ - 'Fadumo Hussein (fmh7pv), Kaleigh O’Hara (ear3cg)'
+date: "06/26/2023"
+fontsize: 11pt
+geometry: margin=0.5in
+urlcolor: black
+output:
+  pdf_document: default
+  word_document: default
+header-includes:
+- \usepackage{setspace}
+- \onehalfspacing
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,echo=FALSE, warning=FALSE, results='hide', message=FALSE}
+#packages 
+
+library(dbplyr)
+library(ggplot2)
+library(tidyverse)
+library(ggthemes)
+library(patchwork)
+library(cowplot)
+Data = read.csv("/Users/karolinastraznikiewicz/Desktop/diamonds4.csv")
+```
+
+
+# Summary 
+
+For the first claim that diamonds with a greater carat weight show more color, our data does not support this claim. According to the chart, it appears that the carat weight quartile does not greatly vary across diamond color which would be expected if the claim were true. The second claim which states that as carat weight increases, the other characteristics of the diamond become more visible appears to be supported by the data. However, this claim was only supported by Flawless (FL) diamonds, and not diamonds of a lower clarity level, leaving the results to be slightly inconclusive without statistical testing being completed. A similar claim was made that diamond cut can influence its color. The results of this chart appeared to support this claim as all diamond cuts at almost 50% of each cut's color were in the top three color rankings, F, E, and D. The fourth claim made by Blue Nile is that colorless diamonds receive higher clarity and color ratings. This claim appeared to be supported by the FL clarity ranking that only included D and F coloring. The remaining clarity levels appear to show a more inconclusive result as the diamond coloring seems to be more evenly spread by clarity ratings. For the fifth claim that many diamond characteristics can be hidden by diamond cut, the chart appears to support this claim. For every diamond clarity, the ideal cut, which is the second high cut ranking, had the highest percentage. From this, it appears that a better diamond cut is typically picked for all clarity levels to hide flaws in the diamond. Claim 6 made by Blue Nile stated that diamond carat weights that are slightly less than typical carat values cost less than getting a normal carat weight. This claim appeared to be supported by carat values below 1.0. For carat values below 1.0, the claim appears correct because, for example, diamonds with a carat size of 0.4 showed lower prices on the graph than diamonds with a carat value of 0.5. Above a carat value of 1.0, the amount of data for each carat decreased, making it difficult to draw assumptions from the graphs.
+
+The final and main claim made by Blue Nile was the diamond cut is the variable that drives price. Based on the graph created, this claim cannot be supported. The chart showed that for every cut, except for the diamond cut that is specific to Blue Nile, the Astor Ideal, the median cost by cut was not that different as the cut increased. In an effort to learn which variable drove price, color, clarity, and carat were looked into. The chart for carat vs. price showed that it appeared that it was the carat that drove the price of the diamond rather than the cut, color, or clarity of the diamond. The seventh claim made by Blue Nile can be further supported by the results of the linear regression model. The model had a statistically significant result which supports that carat weight influences price. 
+
+\newpage
+
+
+# Data Description
+
+### Data Set
+
+This data set contains information one 1214 diamonds available for sale on **Blue Nile** (http://www.bluenile.com), a renowned online diamond retailer. The data set encompasses various attributes of the diamonds, including carat weight, clarity, color, cut, and price. The data was collected from **Blue Nile's** website, capturing a diverse range of diamonds offered by the company.
+
+Blue Nile is a prominent online jewelry retailer specializing in diamonds and engagement rings. Established in 1999, it has become a trusted destination for customers seeking high-quality diamonds at competitive prices. **Blue Nile** offers a wide selection of certified diamonds sourced from reputable suppliers around the world. 
+
+Please note that while this data set primarily originates from **Blue Nile**, additional internet resources were utilized to complete it.
+
+### Variables
+
+This report aims to investigate the relationship between carat weight and the average price per diamond. The data set used consists of observations on various diamonds, with each observation representing a single diamond. The objective is to determine how carat weight influences the pricing of diamonds. 
+
++ ***price*** (numeric in dollars) - **Response variable in regression question** 
+  + The price of a diamond
+  
++ ***carat*** (numeric) - **Predictor variable in regression question**
+  + Carat weight refers to the measurement of a diamond's mass, with one carat equivalent to 200 milligrams or 0.2 grams, and is often used as an indicator of a diamond's size or perceived value.
+  
++ **carat.cat** (categorical) 
+  + (-Inf, .4, .52, 1, Inf)
+  
+  + The quartile that the diamond's corresponding carat value falls in comparison to the rest of the data set.
+  + **Levels**:
+    + "4th quartile" - Diamonds that fall in the top 25% in terms of carat value in the data set. These diamonds were more than 1 carat.
+    + "3rd quartile" - Diamonds that fall in the top 50% in terms of carat value in the data set. These diamonds were more than .52 carats and less than or equal to 1 carat.
+    + "2nd quartile" - Diamonds that fall in the top 75% in terms of carat value in the data set. These diamonds were more than .4 carats and less than or equal to .52 carats.
+    + "1st quartile" - Diamonds that fall in the bottom 25% of carat value in the data set. These diamonds were less than or equal to .4 carats.
+  
++ **clarity** (categorical) 
+  + Clarity of a diamond refers to the presence or absence of internal and external flaws. It is evaluated on a scale of various levels of clarity grades, impacting the diamond's overall visual appearance and value. Diamonds surface flaws are called blemishes, while internal defects are known as inclusions.
+  + **Levels**: 
+    + "FL"  are Flawless (FL) Diamonds - no internal or external characteristics - very rare
+    + "IF" are Internally Flawless (IF) Diamonds - have no inclusions within the stone
+    + "VVS1" and "VVS2" are Very, Very Slightly Included (VVS) Diamonds 
+    + "VS1" and "VS2" are  Very Slightly Included (VS) Diamonds
+    + "SI1" and "SI2" are Slightly Included (SI) Diamonds
+  
++ **color** (categorical)
+  + Color of a diamond refers to the presence or absence of any noticeable tint or hue within the stone. Diamond color is graded on a scale from D (colorless) to Z (light yellow or brown), with higher grades indicating a more colorless and desirable diamond.
+  + **Levels**: 
+    + "D" - Absolutely Colorless 
+    + "E" - Colorless
+    + "F" - Colorless 
+    + "G" - Near Colorless
+    + "H" - Near Colorless (faint yellow hue) 
+    + "I" - Near Colorless (slight yellow)
+    + "J" - Near Colorless (light yellow tone) 
+    + "K" - Faint
+  
++ **cut** (categorical)
+  + Cut of a diamond refers to the quality of how the diamond was shaped. A well-cut diamond reflects light very well, resulting in enhanced sparkle and a higher value, while a poorly cut diamond may appear dull and less captivating.
+  + **Levels**: 
+    + "Astor Ideal" - Cut from the finest raw material, crafted to gather and reflect the most light possible.
+    + "Ideal" - 3% of diamond cut quality. It reflects most of the light that enters the diamond.
+    + "Very Good" - 15% of diamond cut quality. It reflects nearly as much light as the ideal cut.
+    + "Good" - 25% of diamond cut quality. It reflects most of the light that enters, but not as much as a Very Good cut grade.
+
+
+# Data Visualization
+
+```{r,echo=FALSE, warning=FALSE, results='hide', message=FALSE}
+Data$clarity = as.factor(Data$clarity)
+Data$color = as.factor(Data$color)
+Data$cut = as.factor(Data$cut)
+
+Data$clarity<-factor(Data$clarity, 
+                     levels=c("SI1","SI2","VS1","VS2","VVS1","VVS2", "IF","FL"))
+
+#levels(Data$clarity)
+
+Data$cut<-factor(Data$cut, 
+                     levels=c("Good", "Very Good", "Ideal","Astor Ideal"))
+
+#levels(Data$cut)
+
+Data$color<-factor(Data$color, 
+                     levels=c("K","J","I","H","G","F","E","D"))
+
+#levels(Data$color)
+
+Data <- Data %>%
+  mutate(carat.cat = cut(carat, breaks =c(-Inf, .4, .52, 1, Inf), labels = c("1st Quartile", "2nd Quartile", "3rd Quartile", "4th Quartile")))
+```
+
+
+### Price by Clarity 
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 5, fig.width = 7,fig.align='center'}
+clarityprice1 = ggplot(Data, aes(x = clarity)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  geom_bar(fill = "blue4", alpha = 0.7) +
+  labs(title = "Count Plot of Clarity",
+       x = "",
+       y = "Count") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+clarityprice2 = ggplot(Data, aes(x = clarity, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  labs(title = "Price Distribution by Clarity",
+       x = "",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+
+avg_price_by_clarity <- Data %>%
+  group_by(clarity) %>%
+  summarise(avg_price = mean(price))
+
+clarityprice3 = ggplot(avg_price_by_clarity, aes(x = clarity, y = avg_price)) +
+  geom_bar(stat = "identity", fill = "blue4", alpha = 0.7) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  labs(title = "Average Price by Clarity",
+       x = "",
+       y = "Average Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+median_price_by_clarity <- Data %>%
+  group_by(clarity) %>%
+  summarise(median_price = median(price))
+
+clarityprice4 = ggplot(median_price_by_clarity, aes(x = clarity, y = median_price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none",
+        panel.border = element_blank()) +
+  geom_point(color = "blue4", alpha = 0.7, size = 3) +
+  labs(title = "Median Price by Clarity",
+       x = "",
+       y = "Median Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(panel.grid.major = element_line(color = "lightgray"),
+        panel.border = element_blank())
+
+patchwork1 = (clarityprice1 | clarityprice2) / (clarityprice3 | clarityprice4)
+patchwork1 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
+                            tag_sep = '.', tag_suffix = ':',
+                            title = 'Graph 1') &
+   theme(plot.tag.position = c(0, 1),
+        plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
+```
+
+After analyzing Graph 1, it is evident that there are no clear trends indicating significant price differences based on the clarity of diamonds. However, it is worth noting that Flawless (FL) diamonds appear to be the most expensive overall, exhibiting the highest average, median, and singular prices. Nevertheless, it is important to consider that the dataset contains only a limited number of flawless diamonds, resulting in a few data points that heavily skew the overall data. Apart from this observation, all other clarity levels demonstrate similar pricing levels.
+
+This finding suggests that while clarity plays a role in determining a diamond's price, it may not be the sole influential factor. 
+
+### Price by Cut
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+cutplot1 = ggplot(Data, aes(x = cut)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  geom_bar(fill = "blue4", alpha = 0.7) +
+  labs(title = "Count Plot of Cut",
+       x = "",
+       y = "Count") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+cutplot2 = ggplot(Data, aes(x = cut, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  labs(title = "Price Distribution by Cut",
+       x = "",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+
+avg_price_by_cut2 <- Data %>%
+  group_by(cut) %>%
+  summarise(avg_price = mean(price))
+
+cutplot3 = ggplot(avg_price_by_cut2, aes(x = cut, y = avg_price)) +
+  geom_bar(stat = "identity", fill = "blue4", alpha = 0.7) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  labs(title = "Average Price by Cut",
+       x = "",
+       y = "Average Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+median_price_by_cut <- Data %>%
+  group_by(cut) %>%
+  summarise(median_price = median(price))
+
+cutplot4=ggplot(median_price_by_cut, aes(x = cut, y = median_price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 3) +
+  labs(title = "Median Price vs Cut",
+       x = "",
+       y = "Median Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+patchwork2 = (cutplot1 | cutplot2) / (cutplot3 | cutplot4)
+patchwork2 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
+                            tag_sep = '.', tag_suffix = ':',
+                            title = 'Graph 2') &
+   theme(plot.tag.position = c(0, 1),
+        plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
+```
+
+The analysis of Graph 2 reveals interesting findings regarding the cut of diamonds. It is noteworthy that the majority of diamonds available for sale on the website were classified as having an ideal cut. Surprisingly, as the cut quality progresses from good to very good, ideal, and Astor Ideal, the average and median prices show a decreasing trend. However, there is one exception to this pattern, with Astor Ideal diamonds having the highest median price among all cuts (but only a few observations in data set).
+Upon examining the scatterplot, it becomes evident that a significant number of diamonds cluster within the price range of 0 to 50k dollars. However, it is interesting to note that there are instances of individual diamonds with better cuts that have substantially higher prices. While the majority of diamonds fall within a certain price range, diamonds with superior cuts can command significantly higher prices. The relationship between cut and prices should be further investigated to determine if cut is indeed an important predictor, or is it a mix of cut and other diamond characteristics. 
+
+### Price by Color
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+colorplot1 = ggplot(Data, aes(x = color)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  geom_bar(fill = "blue4", alpha = 0.7) +
+  labs(title = "Count Plot of Color",
+       x = "",
+       y = "Count") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+colorplot2 = ggplot(Data, aes(x = color, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  labs(title = "Price Distribution by Color",
+       x = "",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+
+avg_price_by_clarity3 <- Data %>%
+  group_by(color) %>%
+  summarise(avg_price = mean(price))
+
+colorplot3 = ggplot(avg_price_by_clarity3, aes(x = color, y = avg_price)) +
+  geom_bar(stat = "identity", fill = "blue4", alpha = 0.7) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  labs(title = "Average Price by Color",
+       x = "",
+       y = "Average Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+median_price_by_color <- Data %>%
+  group_by(color) %>%
+  summarise(median_price = median(price))
+
+colorplot4 = ggplot(median_price_by_color, aes(x = color, y = median_price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 3) +
+  labs(title = "Median Price vs Color",
+       x = "",
+       y = "Median Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+patchwork3 = (colorplot1 | colorplot2) / (colorplot3 | colorplot4)
+patchwork3 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
+                            tag_sep = '.', tag_suffix = ':',
+                            title = 'Graph 3') &
+   theme(plot.tag.position = c(0, 1),
+        plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
+
+```
+
+The analysis of Graph 3 reveals a notable trend regarding the color of diamonds and its impact on pricing. There is a clear rising pricing trend as the color of diamonds improves. This suggests that consumers are willing to pay more for diamonds with better color grades, which typically exhibit a higher level of colorlessness. Similar to previous observations, a significant number of diamonds cluster within the 0 to 50k price range. This finding aligns with the understanding that most buyers have a budget or a general price range in mind when purchasing a diamond for an engagement ring. Both the average and median prices for diamonds increase as the color grade improves. This indicates that color plays a substantial role in determining the value and price of a diamond. However, there is one exception to this trend, namely the J-color category. Diamonds with a J-color grade have a surprisingly high median price. This observation suggests that individuals may be willing to sacrifice color in favor of obtaining a larger stone size while still managing to save money.
+
+### Price by Carat
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+Data <- Data %>%
+  mutate(carat.cat2 = cut(carat, breaks =c(-Inf, .4, .52, 1, Inf), labels = c("1st", "2nd", "3rd", "4th")))
+
+caratplot1 = ggplot(Data, aes(x = carat.cat2)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  geom_bar(fill = "blue4", alpha = 0.7) +
+  labs(title = "Count Plot of Carat Category",
+       x = "",
+       y = "Count") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+caratplot2 = ggplot(Data, aes(x = carat, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  geom_smooth(method=lm,color="#EB5F0C",alpha=0.5,se = FALSE)+
+  labs(title = "Price Distribution by Carat",
+       x = "",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+
+avg_price_by_carat3 <- Data %>%
+  group_by(carat.cat2) %>%
+  summarise(avg_price = mean(price))
+
+caratplot3 = ggplot(avg_price_by_carat3, aes(x = carat.cat2, y = avg_price)) +
+  geom_bar(stat = "identity", fill = "blue4", alpha = 0.7) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  labs(title = "Average Price by Carat Category",
+       x = "",
+       y = "Average Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+median_price_by_carat <- Data %>%
+  group_by(carat.cat2) %>%
+  summarise(median_price = median(price))
+
+caratplot4 = ggplot(median_price_by_carat, aes(x = carat.cat2, y = median_price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 3) +
+  labs(title = "Median Price vs Carat Category",
+       x = "",
+       y = "Median Price") +
+  scale_y_continuous(labels = scales::comma) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+patchwork4 = (caratplot1 | caratplot2) / (caratplot3 | caratplot4)
+patchwork4 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
+                            tag_sep = '.', tag_suffix = ':',
+                            title = 'Graph 4') &
+   theme(plot.tag.position = c(0, 1),
+        plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
+```
+
+The analysis of Graph 4 reveals a clear and significant rising trend between the carat weight of diamonds and their prices. As the number of carats increases, the pricing also increases, indicating that diamond buyers are willing to pay more for larger stones. Consistently, the heaviest diamonds in terms of carat weight exhibit substantially higher prices compared to smaller diamonds. This finding aligns with the understanding that larger diamonds are rarer and more coveted, leading to a higher market value. The data set also reveals that most diamonds purchased by buyers are within the range of 0 to 2 carats, indicating a common preference (or financial restraint) for diamonds of this size. These findings emphasize the significant impact of carat weight on diamond pricing.
+
+## Claims
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4,fig.align='center'}
+# claimplot1 = ggplot(Data, aes(x = color, y = carat, fill = color)) +
+#   theme_minimal() +
+#   theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+#         axis.text = element_text(size = 8, face = "bold"),
+#         axis.title = element_text(size = 12, face = "bold"),
+#         legend.position = "none") +
+#   geom_violin() +
+#   labs(title = "Carat vs Color",
+#        x = "",
+#        y = "Carat",
+#        fill = "Color") +
+#   scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46")
+#   ) +
+#   theme(#plot.background = element_rect(fill = "white"),
+#         panel.grid.major = element_line(color = "lightgray"))
+# 
+# claimplot2 = ggplot(Data, aes(x = color, fill = carat.cat2)) +
+#   theme_minimal() +
+#   theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+#         axis.text = element_text(size = 8, face = "bold"),
+#         axis.title = element_text(size = 12, face = "bold"),
+#         legend.title = element_text(size = 10, face = "bold"),
+#         legend.position = "bottom") +
+#   geom_bar(position = "fill") +
+#   labs(title = "Color by Carat",
+#        x = "",
+#        y = "Count",
+#        fill = "Carat") +
+#   scale_fill_manual(values = c("#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46")) +
+#   theme(#plot.background = element_rect(fill = "white"),
+#         panel.grid.major = element_line(color = "lightgray"))
+# 
+# patchwork5 = (claimplot1 | claimplot2)
+# patchwork5 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
+#                             tag_sep = '.', tag_suffix = ':',
+#                             title = 'Graph 5') &
+#    theme(plot.tag.position = c(0, 1),
+#         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
+```
+
+### 1. Blue Nile claims that as carat weight increases, other characteristics become more visible.
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4,fig.align='center'}
+
+claim2plot1 = ggplot(subset(Data, !is.na(carat.cat)), aes(x=clarity, fill=carat.cat2))+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.title = element_text(size = 10, face = "bold"),
+        legend.position = "bottom") +
+  geom_bar(position = "fill") +
+  labs(title = "Graph 5 \n Distribution of Carat Quartile for Each Clarity",
+       x = "Clarity",
+       y = "Proportion of Diamonds",
+       fill = "Carat Quartile") +
+  scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46","blue4")) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+claim2plot1
+
+#ggplot(subset(Data, !is.na(carat.cat)), aes(x=clarity, fill=carat.cat2))+
+#  geom_bar(position = "fill")+
+# theme(plot.title = element_text(hjust = 0.5))+
+# labs(x = "Clarity", y = "Proportion of Diamonds", title = "Diamond Clarity vs. Diamond Carat")
+
+# claim2plot2 = ggplot(subset(Data, !is.na(carat.cat2)), aes(x=carat.cat2, fill=clarity))+
+#   theme_minimal() +
+#   theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+#         axis.text = element_text(size = 8, face = "bold"),
+#         axis.title = element_text(size = 12, face = "bold"),
+#         legend.title = element_text(size = 10, face = "bold"),
+#         legend.position = "bottom") +
+#   geom_bar(position = "fill") +
+#   labs(title = "Diamond Clarity vs. Diamond Carat",
+#        x = "Carat Quartile",
+#        y = "Proportion of Diamonds",
+#        fill = "Clarity") +
+#   scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46","blue4")) +
+#   theme(#plot.background = element_rect(fill = "white"),
+#         panel.grid.major = element_line(color = "lightgray"))
+
+#ggplot(subset(Data, !is.na(carat.cat2)), aes(x=carat.cat2, fill=clarity))+
+#  geom_bar(position = "fill")+
+#  theme(plot.title = element_text(hjust = 0.5))+
+#  labs(x = "Clarity", y = "Proportion of Diamonds", title = "Diamond Clarity vs. Diamond Carat")
+
+# patchwork6 = (claim2plot1 | claim2plot2)
+# patchwork6 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
+#                             tag_sep = '.', tag_suffix = ':',
+#                             title = 'Graph 6') &
+#    theme(plot.tag.position = c(0, 1),
+#         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
+```
+
+Blue Nile claims that as you go up in carat weight, other characteristics become more visible, implying that diamonds of higher carat weight, are the more obvious blemishes. Therefore, one can assume that buyers and sellers prioritize high clarity for diamonds of a higher carat. Graph 6 shows that of diamonds with the highest clarity, Flawless (FL), over 50% were in the highest carat quartile as well.  However, in all other categories, there is no distinct difference in the distribution of carat and level of clarity. This leads to the hypothesis that for a diamond's carat to have an effect on its clarity, the diamond needs to be over 1 carat. 
+To see how combinations of carat and clarity interact with price of the diamond, a scatter plot is created.
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+# Data <- Data %>%
+#   mutate(carat.cat = cut(carat, breaks =c(-Inf, .4, .52, 1, Inf), labels = c("1st Quartile", "2nd Quartile", "3rd Quartile", "4th Quartile")))
+ggplot(subset(Data, !is.na(carat)), aes(x=carat, y=price, color = clarity))+
+  geom_point()+
+  theme_minimal()+
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.title = element_text(size = 10, face = "bold"))+
+  scale_size(range=c(0.1,12))+
+  labs(title = "Graph 6 \n Diamond Carat vs. Diamond Price by Diamond Clarity",
+       x = "Carat",
+       y = "Price",
+       color = "Clarity")+
+  scale_color_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46", "blue4")) +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+```
+
+Graph 6 shows that as the carat value increases, so does price. However, as clarity does not appear to have a consistent trend with price and carat value. This is consistent with Graph 1, where clarity and price do not have a strong association, except when the clarity is FL, like Graph 6. Therefore, clarity does not have a strong relationship with carat or price, unless the clarity is FL.
+
+### 2. The company claims that diamond cut influences diamond color.
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
+
+claim3plot1 = ggplot(Data, aes(x = cut, fill = color))+ 
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.title = element_text(size = 10, face = "bold")) +
+  geom_bar(position = "fill") +
+  labs(title = "Graph 7 \n Distribution of Color in Each Cut",
+       x = "Cut",
+       y = "Proportion of Diamonds",
+       fill = "Color") +
+  scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46")) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+claim3plot1
+
+#Data %>%
+#   ggplot(aes(x = cut, fill = color))+ 
+ #  geom_bar(position = "fill") +
+  #  theme(axis.text.x = element_text(angle = 0))+
+   # labs(x="Type of cut", y="Percentage of Color in Each Cut", 
+    #     title="Distribution of color in each cut")
+```
+
+#### Proportion of Color in Each Cut 
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+tab11 <- table(Data$cut, Data$color)
+tab11 = round(prop.table(tab11, 1) * 100, 2)
+#write.table(tab11,"tab11.txt", sep = ",")
+```
+
+|             | K | J    | I     | H     | G     | F     | E     | D     |
+|-------------|---|------|-------|-------|-------|-------|-------|-------|
+| Good        | 0 | 8.22 | 10.96 | 13.7  | 12.33 | 17.81 | 10.96 | 26.03 |
+| Very Good   | 0 | 7.59 | 11.26 | 10.99 | 19.37 | 18.59 | 17.28 | 14.92 |
+| Ideal       | 0 | 7.17 | 15.29 | 12.86 | 15.29 | 17.86 | 14.21 | 17.32 |
+| Astor Ideal | 0 | 10   | 15    | 5     | 10    | 35    | 10    | 15    |
+
+Blue Nile claims that cut can influence diamond color. In order to visualize this claim, a bar graph comparing cut against color and a proportion table were made. When looking at the graph, there is no distinct pattern of color in any category of cut. This claim is unable to be supported by the data presented. 
+
+### 3. Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale.
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
+
+claim4plot1 = ggplot(Data, aes(x = clarity, fill = color))+ 
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.title = element_text(size = 10, face = "bold")) +
+  geom_bar(position = "fill") +
+  labs(title = "Graph 8 \n Distribution of Color for Each Clarity",
+       x = "Clarity",
+       y = "Proportion of Diamonds",
+       fill = "Color") +
+  scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46")) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+claim4plot1
+
+# Data %>%
+#    ggplot(aes(x = clarity, fill = color))+ 
+#    geom_bar(position = "fill") +
+#     theme(axis.text.x = element_text(angle = 0))+
+#     labs(x="Color", y="Percentage of Clarity in Each Color",
+#          title="Distribution of Clarity for each Color")
+```
+
+#### Proportion of color in each clarity ranking  
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+tab <- table(Data$clarity, Data$color)
+tab = round(prop.table(tab, 1) * 100, 2)
+```
+
+|      | K | J    | I     | H     | G     | F     | E     | D     |
+|------|---|------|-------|-------|-------|-------|-------|-------|
+| SI1  | 0 | 6.58 | 14.4  | 11.93 | 16.87 | 17.7  | 14.81 | 17.7  |
+| SI2  | 0 | 7.88 | 14.55 | 14.55 | 16.97 | 22.42 | 11.52 | 12.12 |
+| VS1  | 0 | 6.87 | 13.3  | 12.02 | 15.45 | 16.31 | 16.31 | 19.74 |
+| VS2  | 0 | 7.48 | 9.35  | 12.62 | 16.36 | 19.63 | 20.56 | 14.02 |
+| VVS1 | 0 | 9.4  | 14.77 | 12.08 | 16.11 | 17.45 | 13.42 | 16.78 |
+| VVS2 | 0 | 8.23 | 17.72 | 9.49  | 17.72 | 15.82 | 11.39 | 19.62 |
+| IF   | 0 | 4.08 | 14.29 | 14.29 | 12.24 | 22.45 | 12.24 | 20.41 |
+| FL   | 0 | 0    | 0     | 0     | 0     | 33.33 | 0     | 66.67 |
+
+Blue Nile claims that a more colorless diamond receives higher clarity scores. In order to visualize this claim, a bar graph comparing clarity against color and a proportion table were made. When looking at the graph, it shows that of the highest clarity Flawless (FL) is 100% of diamonds are in the colorless category. It drops when looking at the IF column but there is no distinct pattern of this decreasing when looking at other clarity scores. The claim is supported by the data presented. 
+
+### 4. Blue Nile claims that diamond cut can hide flaws in other characteristics.
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
+ggplot((Data) , aes(x=clarity, fill=cut))+
+  geom_bar(position = "fill")+
+  theme_minimal()+
+  scale_x_discrete(limits=c("SI2", "SI1", "VS2", "VS1", "VVS2", "VVS1", "IF", "FL")) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))  +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.position = "bottom") +
+  scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46","blue4")) +
+  labs(x="Clarity", y="Proportion of Diamonds", 
+       title="Graph 9 \n Distribution of Cut for Each Clarity ",
+       fill = "Cut")
+```
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+clarity_cut <- table (Data$clarity, Data$cut)
+#clarity_cut
+```
+
+**Table 1 - Counts of Clarity vs. Cut, Table 2 - Proportions of Clarity vs. Cut**
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+prop_clarity_cut <- round(prop.table(clarity_cut, 1) * 100, 2)
+#prop_clarity_cut
+```
+
+|Table 1 | Good | Very Good | Ideal | Astor Ideal |Table 2 | Good | Very Good | Ideal | Astor Ideal |
+|--------|------|-----------|-------|-------------|--------|------|-----------|-------|-------------|
+| SI1    | 19   | 70        | 150   | 4           | SI1    | 7.82 | 28.81     | 61.73 | 1.65        |
+| SI2    | 14   | 64        | 86    | 1           | SI2    | 8.48 | 38.79     | 52.12 | 0.61        |
+| VS1    | 13   | 78        | 136   | 6           | VS1    | 5.58 | 33.48     | 58.37 | 2.58        |
+| VS2    | 13   | 65        | 131   | 5           | VS2    | 6.07 | 30.37     | 61.21 | 2.34        |
+| VVS1   | 7    | 42        | 99    | 1           | VVS1   | 4.7  | 28.19     | 66.44 | 0.67        |
+| VVS2   | 6    | 50        | 99    | 3           | VVS2   | 3.8  | 31.65     | 62.66 | 1.9         |
+| IF     | 1    | 11        | 37    | 0           | IF     | 2.04 | 22.45     | 75.51 | 0           |
+| FL     | 0    | 2         | 1     | 0           | FL     | 0    | 66.67     | 33.33 | 0           |
+
+The website claims that many diamond characteristics can be hidden by cut. To test this claim, diamond cut was analyzed against diamond clarity. From Blue Nile's claim, the quality of the diamond cut should be higher in diamonds with lower clarity. According to the website, the clarity ratings from lowest to highest in the data set are SI2, SI1, VVS2, VVS1, VS2, VS1, IF, FL. Furthermore, the ratings can be grouped together as SI, VS, VVS, IF and FL. Additionally, the cut quality from low to high is Good, Very Good, Ideal, Astor Ideal. Based on these rankings and the claim, we should expect to see lower clarity ratings (SI and VS) associated with higher cut quality. From the bar chart we can see that the FL clarity rating only contained the diamond cuts Very Good and Ideal. The second highest clarity rating contained Good, Very Good, and Ideal diamond cuts. The clarity ratings SI2 to VS1 contained diamonds with all four cuts.
+
+From the bar chart, this claim appears to be supported by the data. For the purpose of looking at this data, the Astor Ideal cut is going to be ignored in the discussion as there were not many diamond purchases with this cut giving very little data. For the SI2 clarity, 52.12% of the cuts were Ideal which is the second highest cut ranking overall. Except for the Astor Ideal cut, the Good cut had the lowest percentage at 8.48%. The SI1 clarity showed similar results with, 61.73% of the cuts being Idea and the cut of Good had the lowest percentage at 7.82%. For VS2, the Ideal cut was highest at 61.21% and Good was lowest at 6.07. Finally, the VS1 cut had the highest percentage of Ideal cuts at 58.37% and the Good cut was the lowest at 5.58%. From these proportions, the claim that better diamond cuts hide imperfections in the diamond appears to be true. 
+
+
+### 5. The claim Blue Nile makes is that diamond carat weights that are slightly less (0.4, 0.9, 1.4, 1.9) than typical carat values (0.5, 1.0, 1.5, or 2.0) cost less than getting a normal carat weight.
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+carat_.5 <- Data %>% 
+  filter(between(carat,.4,.6))
+
+carat_1 <- Data %>% 
+  filter(between(carat,.9,1.1))
+
+carat_1.5 <- Data %>% 
+  filter(between(carat,1.4,1.6))
+
+carat_2 <- Data %>% 
+  filter(between(carat,1.9,2.1))
+
+graph_.5<- ggplot((carat_.5), aes(x=carat, y=price))+
+  geom_point(alpha = .5, color = "blue4")+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) +
+  labs(x="Carat (0.40-0.60)", y="Price", 
+       title="Diamond Carat Against Price")
+
+graph_1<- ggplot((carat_1), aes(x=carat, y=price))+
+  geom_point(alpha = .5, color = "blue4")+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) +
+  labs(x="Carat (0.90-1.10)", y="Price", 
+       title="Diamond Carat Against Price")
+
+graph_1.5<- ggplot((carat_1.5), aes(x=carat, y=price))+
+  geom_point(alpha = .5, color = "blue4")+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) +
+  labs(x="Carat (1.40-1.60)", y="Price", 
+       title="Diamond Carat Against Price")
+
+graph_2<- ggplot((carat_2), aes(x=carat, y=price))+
+  geom_point(alpha = .5, color = "blue4")+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))  +
+  labs(x="Carat (1.90-2.10)", y="Price", 
+       title="Diamond Carat Against Price")
+
+#plot_grid(graph_.5, graph_1, graph_1.5, graph_2, labes = "AUTO", nrow= 2, ncol = 2)
+
+patchwork7 = (graph_.5 | graph_1) / (graph_1.5 | graph_2)
+patchwork7 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
+                            tag_sep = '.', tag_suffix = ':',
+                            title = 'Graph 10') &
+   theme(plot.tag.position = c(0, 1),
+        plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
+```
+
+
+The claim Blue Nile makes is that diamond carat weights that are slightly less (0.4, 0.9, 1.4, 1.9) than typical carat values (0.5, 1.0, 1.5, or 2.0) cost less than getting a normal carat weight. From the data this claim is best supported by lower carat weights such as a half of a carat and a carat. The top two graphs show that a diamond with a carat weight of 0.4 does appear to have a lower cost than diamonds with a carat weight of 0.5. This is further displayed by the second graph which shows a similar trend. The carat weight of 0.9 appears to have a lower price than a carat weight of 1.0. As the carat value continues to increase it becomes more difficult to make assumptions from the graph because there are fewer data points. Therefore for diamonds with a carat value greater than 1.0, it is difficult to see if the data actually supports Blue Nile's claim. As a result, we can say that we can assume their claim appears to be supported for carat values of 1.0 or less, but is inconclusive at higher carat weights. 
+
+### 6. The main claim made by Blue Nile is that diamond cut drives the price of the diamond.
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+
+ystar<-log(Data$price)
+Data<-data.frame(Data,ystar)
+
+xstar<-log(Data$carat)
+Data<-data.frame(Data,xstar)
+
+graph11 = ggplot((Data) , aes(x=cut, y=price, color = cut))+
+  geom_boxplot (color = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24"))+
+  coord_cartesian(ylim=c(0, 20000)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 10,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))  +
+  labs(x="Cut", y="Price", 
+       title="Diamond Cut Against Diamond Price")
+
+# graph11 = ggplot((Data) , aes(x=cut, y=price, color = cut))+
+#   geom_boxplot ()+
+#   coord_cartesian(ylim=c(0, 20000)) +
+#   scale_x_discrete(limits=c("Good", "Very Good", "Ideal", "Astor Ideal")) +
+#   theme_minimal() +
+#   theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+#         axis.text = element_text(size = 8, face = "bold"),
+#         axis.title = element_text(size = 12,face = "bold"),
+#         legend.title = element_blank(),
+#         legend.position = "none") +
+#   #scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46")) +
+#   theme(#plot.background = element_rect(fill = "white"),
+#         panel.grid.major = element_line(color = "lightgray"))  +
+#   labs(x="Diamond Cut", y="Price", 
+#        title="Diamond Cut Against Diamond Price")
+
+
+graph12 = ggplot((Data) , aes(x=clarity, y=price, color = clarity))+
+  geom_boxplot (color = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46","blue4"))+
+  coord_cartesian(ylim=c(0, 30000)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 10,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))  +
+  labs(x="Clarity", y="Price", 
+       title="Diamond Clarity Against Diamond Price")
+
+# graph12 = ggplot((Data) , aes(x=clarity, y=price, color = clarity))+
+#   geom_boxplot ()+
+#   coord_cartesian(ylim=c(0, 30000)) +
+#   scale_x_discrete(limits=c("SI2", "SI1", "VVS2", "VVS1", "VS2", "VS1", "IF", "FL")) +
+#   theme_minimal() +
+#   theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+#         axis.text = element_text(size = 8, face = "bold"),
+#         axis.title = element_text(size = 12,face = "bold"),
+#         legend.title = element_blank(),
+#         legend.position = "none") +
+#   #scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46")) +
+#   theme(#plot.background = element_rect(fill = "white"),
+#         panel.grid.major = element_line(color = "lightgray"))  +
+#   labs(x="Diamond Clarity", y="Price", 
+#        title="Diamond Clarity Against Diamond Price")
+
+graph13 = ggplot((Data) , aes(x=color, y=price, color = color))+
+  geom_boxplot (color = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46"))+
+  coord_cartesian(ylim=c(0, 20000)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 10,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))  +
+  labs(x="Color", y="Price", 
+       title="Diamond Color Against Diamond Price")
+
+# graph13 = ggplot((Data) , aes(x=color, y=price, color = color))+
+#   geom_boxplot ()+
+#   coord_cartesian(ylim=c(0, 20000)) +
+#   scale_x_discrete(limits=c("J", "I", "H", "G", "F", "E", "D")) +
+#   theme_minimal() +
+#   theme(plot.title = element_text(hjust = 0.5, size = 10, face = "bold"),
+#         axis.text = element_text(size = 8, face = "bold"),
+#         axis.title = element_text(size = 10,face = "bold"),
+#         legend.title = element_blank(),
+#         legend.position = "none") +
+#   #scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46")) +
+#   theme(#plot.background = element_rect(fill = "white"),
+#         panel.grid.major = element_line(color = "lightgray"))  +
+#   labs(x="Diamond Color", y="Price", 
+#        title="Diamond Color Against Diamond Price")
+
+graph14 = ggplot(Data, aes(x = xstar, y = ystar)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 10,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 0.5)+
+  geom_smooth(method=lm,color="#EB5F0C",alpha=0.5,se = FALSE)+
+  labs(title = "Price Distribution by Carat",
+       x = "Log Carat",
+       y = "Log Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(#plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+
+patchwork8 = (graph11 | graph12) / (graph13 | graph14)
+patchwork8 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
+                            tag_sep = '.', tag_suffix = ':',
+                            title = 'Graph 11') &
+   theme(plot.tag.position = c(0, 1),
+        plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
+```
+
+**Median Price of Cut, Clarity, and Color**
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,results='asis'}
+library(knitr)
+
+# Aggregate by cut
+aggregate_cut <- aggregate(Data$price, list(Data$cut), median)
+
+# Display the aggregated results with a formatted table
+t1  = kable(aggregate_cut, col.names = c("Cut", "Median Price"), align = "c")
+
+# Aggregate by clarity
+aggregate_clarity <- aggregate(Data$price, list(Data$clarity), median)
+
+# Display the aggregated results with a formatted table
+t2 = kable(aggregate_clarity, col.names = c("Clarity", "Median Price"), align = "c")
+
+# Aggregate by color
+aggregate_color <- aggregate(Data$price, list(Data$color), median)
+
+# Display the aggregated results with a formatted table
+t3 = kable(aggregate_color, col.names = c("Color", "Median Price"), align = "c")
+
+# t1 = aggregate(Data$price,        
+#           list(Data$cut),
+#           median)
+# 
+# t2 = aggregate(Data$price,        
+#           list(Data$clarity),
+#           median)
+# 
+# t3 = aggregate(Data$price,        
+#           list(Data$color),
+#           median)
+
+```
+
+| Clarity | Median Price | Color | Median Price | Cut         | Median Price |
+|---------|--------------|-------|--------------|-------------|--------------|
+| SI1     | 1655         | J     | 1803         | Good        | 1903         |
+| SI2     | 1129         | I     | 1212         | Very Good   | 1744.5       |
+| VS1     | 1594         | H     | 1575         | Ideal       | 1354         |
+| VS2     | 1472         | G     | 1374         | Astor Ideal | 2854         |
+| VVS1    | 1392         | F     | 1485         |             |              |
+| VVS2    | 1389.5       | E     | 1602         |             |              |
+| IF      | 1427         | D     | 1781         |             |              |
+| FL      | 13733        |       |              |             |              |
+
+**Correlation of Price and Carat**
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+cor (Data$price, Data$carat)
+```
+
+The main claim made by Blue Nile is that diamond cut drives the price of the diamond. If this claim is true, we should expect to see an increase in median prices as the cut quality increases and the other variables of carat, color, and clarity should not show as much difference as quality or weight increases. From the box plot that compares diamond cut and price, the claim does not appear to be true. As stated, if cut drove price, then a diamond cut of Good should have the lowest median price while better diamond cuts should have higher median prices. In reality, what is shown is that as cut quality increases, except for Astor Ideal, the median diamond price decreases. It should be noted that Astor Ideal is Blue Nile's exclusive cut which could impact the price. For a diamond cut of Good, the median diamond cost was 1,903 dollars, for Very Good it was 1,744.5 dollars, and for Ideal it was 1354.0 dollars, and for Astor Ideal it was 2854.0 dollars. In an attempt to see what characteristics drive the cost, box plots were also created for diamond clarity and color against price and a scatter plot was created for carat and price. The box plot for clarity shows that except for Flawless (FL) diamonds, the median price of the diamonds is relatively similar from low clarity to high clarity. The box plot for diamond color showed a similar result with most medians being close to 1,500 dollars. The scatter plot for carat against price showed a positive r value of 0.82. This suggests that as carat weight increases, price does as well. From these four graphs combined, it appears that we can debunk Blue Nile's claim that cut drives price. Instead, it appears that the diamond's carat weight is what drive the cost of the diamond. 
+
+
+
+
+# Simple Linear Regression
+
+A simple linear regression model helps to further explore the relationship between the price of a diamond and the diamond's carat. The first step to fitting this model is to see if the relationship between the response variable (price of a diamond) and the predictor variable (the diamond's carat) meet the assumptions for a regression model without any transformations. To make this assessment, a scatter plot, residual plot and ACF plot are created.
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+ggplot(Data, aes(x = carat, y = price)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  geom_smooth(method=lm,color="#EB5F0C",alpha=0.5,se = FALSE)+
+  labs(title = "Price Distribution by Carat",
+       x = "Carat",
+       y = "Price") +
+  scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+```
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+result<-lm(price~carat, data=Data)
+par(mfrow = c(2, 2))
+plot(result)
+```
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+acf(result$residuals, main = "ACF of Residuals with No Transformations", ylim = c(-.2, .2))
+```
+
+The scatter plot and residual plot indicate that the errors do not have a mean of 0, do not have constant variance, and are not normally distributed. In the "Residuals vs. Fitted" plot, the residuals are not evenly distributed across the horizontal axis. For fitted values less than 100,000, the majority of data points lie below the horizontal axis. Meanwhile, for fitted values over 100,000, the majority of data points lie above the horizontal axis. Thus, the errors do not have a mean of 0. Additionally, the residuals do not have similar vertical variation in the "Residuals vs. Fitted" plot; instead, the variance increases as the fitted values increase. This leads to the conclusion that the errors do not have constant variance. The "Q-Q Residuals" has many data points far from the QQ line, indicating that the errors do not follow a normal distribution. On the other hand, the ACF plot shows that lags greater than zero are mostly insignificant. Therefore, there is no evidence that the data are dependent on each other.
+
+Since some regression assumptions are violated, a transformation of the data is necessary. The response variable should be transformed first since the response variable affects the shape of the relationship and the vertical spread of the data points. 
+
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center',fig.height = 3.5}
+MASS::boxcox(result,lambda = seq(0, 0.5, 0.1))
+```
+
+The above box cox plot helps us identify our lambda value for the transformation. Since 1 does not lie in the confidence interval, it is confirmed that a transformation on the response variable is needed. 0 does not lie in the confidence interval, so a log transformation will not be performed initially. Instead, a lambda value of 0.3 is chosen since it lies near the center of the confidence interval.
+
+**Lambda 0.3 Transformed**
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+ystar1<-(Data$price)**.3
+Data<-data.frame(Data,ystar1)
+ggplot(Data, aes(x = carat, y = ystar1)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+        axis.text = element_text(size = 8, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  geom_smooth(method=lm,color="#EB5F0C",alpha=0.5,se = FALSE)+
+  labs(title = "Price^0.3 Distribution by Carat",
+       x = "Carat", 
+       y = "Price^0.3") +
+  #scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+```
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+result.ystar1<-lm(ystar1~carat, data=Data)
+par(mfrow = c(2, 2))
+plot(result.ystar1)
+```
+
+The transformation on the response variable with lambda = 0.3 does not resolve any of the assumption violations. In the "Residuals vs. Fitted" plot, the residuals remain unevenly distributed across the horizontal axis and the variance increases as the fitted values increase. Furthermore, the "Q-Q Residuals" plot has many data points far from the QQ line. Since this transformation has proven ineffective on its own, the first transformation on the data will be replaced by a log transformation. A log transformation on the response variable is preferred over the lambda = 0.3 transformation so that the estimated coefficients and slope can easily be interpreted. 
+
+**Log y Transformed**
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+ystar<-log(Data$price)
+Data<-data.frame(Data,ystar)
+
+ggplot(Data, aes(x = carat, y = ystar)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 2)+
+  geom_smooth(method=lm,color="darkorange",alpha=0.5,se = FALSE)+
+  labs(title = "Log Price Distribution by Carat",
+       x = "Carat",
+       y = "Log Price") +
+  #scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray")) 
+```
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+result.ystar<-lm(ystar~carat, data=Data)
+par(mfrow = c(2, 2))
+plot(result.ystar)
+```
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+acf(result.ystar$residuals, main = "ACF with Log Transformation of y", ylim = c(-.2, .2))
+```
+
+As indicated by the scatter and residual plots, the log transformation on the response variable does not resolve all of the assumption violations either. The "Residual vs. Fitted" plot still displays unevenly distributed residuals across the horizontal axis. In addition, there are multiple data points far from the QQ line in the "Q-Q Residuals" plot. However, the variance remains relatively constant in the "Residuals vs. Fitted" plot. This indicates that the assumption that the errors have constant variance is met. Moreover, the ACF plot indicates that after the log transformation of the response variable, the data remains to appear independent.
+
+**Log x and y Transformed**
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+xstar<-log(Data$carat)
+Data<-data.frame(Data,xstar)
+
+ggplot(Data, aes(x = xstar, y = ystar)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+        axis.text = element_text(size = 10, face = "bold"),
+        axis.title = element_text(size = 12,face = "bold"),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  geom_point(color = "blue4", alpha = 0.7, size = 1)+
+  geom_smooth(method=lm,color="darkorange",alpha=0.5,se = FALSE)+
+  labs(title = "Log Price Distribution by Log Carat",
+       x = "Log Carat",
+       y = "Log Price") +
+  #scale_y_continuous(breaks = seq(0, max(Data$price), by = 50000)) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "lightgray"))
+```
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+result.xstar<-lm(ystar~xstar, data=Data)
+par(mfrow = c(2, 2))
+plot(result.xstar)
+```
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+acf(result.xstar$residuals, main = "ACF LogResponse ~ LogPredictor", ylim = c(-.2, .2))
+```
+
+After both the log transformations on the response and predictor variables, the scatter plot and residual plot indicate that the errors have a mean of 0, have constant variance and are normally distributed. The "Residuals vs. Fitted" plot shows that residuals are evenly distributed across the horizontal axis and that the residuals have similar vertical variation. In the "Q-Q Residuals" plot, most data points are close to the QQ line, indicating that the errors follow a normal distribution. The ACF plot shows that lags greater than zero are mostly insignificant, so the data can be assumed to be independent.
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center',fig.height = 3.5}
+#MASS::boxcox(result.xstar,lambda =seq(0, 0.7, 0.1))
+```
+
+**Linear Regression Model**
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+summary(result.xstar)
+```
+
+In order to create an appropriate linear model and not violate assumptions, the $x$ and $y$ variables both had to be transformed.
+
+Referring to the transformations performed and the above summary of the regression model, the regression equation to estimate the price of a diamond $\hat{y}$ based on the carat of the diamond $x$ is $log(\hat{y}) = 1.94402log(x)+8.521208$. The scatter plot shows that as the carat of a diamond increases, so does the price of the diamond. The slope ($1.94402$) is greater than 1, indicating that as the carat of the diamond continues to increase, the price of the diamond increases as a faster rate. This means that the price per carat of the diamond tends to increase as the number of carats increases. Since there are few diamonds on the market over 2 carats, it makes sense that the rarity of diamonds over two carats would sell for a more expensive rate.
+
+This can be further confirmed as the p-value for the value x.star. It is much smaller than 0.05, meaning that the null hypothesis of the slope being zero or insignificant, contextually that carat as no affect on price, is rejected. The alternative hypothesis that the slope isn’t zero or that carat does have an affect on price is accepted. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
