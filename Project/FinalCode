@@ -552,11 +552,7 @@ claim2plot1
 #         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
 
- Graph 6 shows that of diamonds with the highest clarity, Flawless (FL), over 50% were in the highest carat quartile as well.  However, in all other categories, there is no distinct difference in the distribution of carat and level of clarity. This leads to the hypothesis that for a diamond's carat to have an effect on its clarity, the diamond needs to be over 1 carat. 
-
-Graph 6 shows that as the carat value increases, so does price. However, as clarity does not appear to have a consistent trend with price and carat value. This is consistent with Graph 1, where clarity and price do not have a strong association, except when the clarity is FL, like Graph 6. Therefore, clarity does not have a strong relationship with carat or price, unless the clarity is FL.
-
-### 2. The company claims that diamond cut influences diamond color.
+Blue Nile claims that diamond cut influences diamond color. To see if there is a relationship between diamond cut and diamond color, we display bar graph comparing cut against color and a proportion tablein Figure X and Table X.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
 
@@ -599,9 +595,9 @@ tab11 = round(prop.table(tab11, 1) * 100, 2)
 | Ideal       | 0 | 7.17 | 15.29 | 12.86 | 15.29 | 17.86 | 14.21 | 17.32 |
 | Astor Ideal | 0 | 10   | 15    | 5     | 10    | 35    | 10    | 15    |
 
-Blue Nile claims that cut can influence diamond color. In order to visualize this claim, a bar graph comparing cut against color and a proportion table were made. When looking at the graph, there is no distinct pattern of color in any category of cut. This claim is unable to be supported by the data presented. 
+When looking at the graph, there is no distinct pattern of color in any category of cut. This claim is unable to be supported by the dataset presented. 
 
-### 3. Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale.
+Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale. In order to visualize this claim, a bar graph comparing clarity against color and a proportion table in Figure X and Table Y were made.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
 
@@ -647,7 +643,7 @@ tab = round(prop.table(tab, 1) * 100, 2)
 | IF   | 0 | 4.08 | 14.29 | 14.29 | 12.24 | 22.45 | 12.24 | 20.41 |
 | FL   | 0 | 0    | 0     | 0     | 0     | 33.33 | 0     | 66.67 |
 
-Blue Nile claims that a more colorless diamond receives higher clarity scores. In order to visualize this claim, a bar graph comparing clarity against color and a proportion table were made. When looking at the graph, it shows that of the highest clarity Flawless (FL) is 100% of diamonds are in the colorless category. It drops when looking at the IF column but there is no distinct pattern of this decreasing when looking at other clarity scores. The claim is supported by the data presented. 
+When looking at the graph, it shows that of the highest clarity Flawless (FL) is 100% of diamonds are in the colorless category. It drops when looking at the IF column but there is no distinct pattern of this decreasing when looking at other clarity scores. The claim is supported by the data presented. 
 
 ### 4. Blue Nile claims that diamond cut can hide flaws in other characteristics.
 
