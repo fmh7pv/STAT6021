@@ -142,7 +142,7 @@ clarityprice1 = ggplot(Data, aes(x = clarity)) +
         legend.position = "none") +
   geom_bar(fill = "blue4", alpha = 0.7) +
   labs(title = "Count Plot of Clarity",
-       x = "",
+       x = "Clarity Level",
        y = "Count") +
   theme(#plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray"))
@@ -156,7 +156,7 @@ clarityprice2 = ggplot(Data, aes(x = clarity, y = price)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 2)+
   labs(title = "Price Distribution by Clarity",
-       x = "",
+       x = "Clarity Level",
        y = "Price") +
   scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -174,7 +174,7 @@ clarityprice3 = ggplot(avg_price_by_clarity, aes(x = clarity, y = avg_price)) +
         axis.title = element_text(size = 12, face = "bold"),
         legend.position = "none") +
   labs(title = "Average Price by Clarity",
-       x = "",
+       x = "Clarity Level",
        y = "Average Price") +
   scale_y_continuous(labels = scales::comma) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -193,7 +193,7 @@ clarityprice4 = ggplot(median_price_by_clarity, aes(x = clarity, y = median_pric
         panel.border = element_blank()) +
   geom_point(color = "blue4", alpha = 0.7, size = 3) +
   labs(title = "Median Price by Clarity",
-       x = "",
+       x = "Clarity Level",
        y = "Median Price") +
   scale_y_continuous(labels = scales::comma) +
   theme(panel.grid.major = element_line(color = "lightgray"),
@@ -224,7 +224,7 @@ cutplot1 = ggplot(Data, aes(x = cut)) +
         legend.position = "none") +
   geom_bar(fill = "blue4", alpha = 0.7) +
   labs(title = "Count Plot of Cut",
-       x = "",
+       x = "Cut Level",
        y = "Count") +
   theme(#plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray"))
@@ -238,7 +238,7 @@ cutplot2 = ggplot(Data, aes(x = cut, y = price)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 2)+
   labs(title = "Price Distribution by Cut",
-       x = "",
+       x = "Cut Level",
        y = "Price") +
   scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -256,7 +256,7 @@ cutplot3 = ggplot(avg_price_by_cut2, aes(x = cut, y = avg_price)) +
         axis.title = element_text(size = 12, face = "bold"),
         legend.position = "none") +
   labs(title = "Average Price by Cut",
-       x = "",
+       x = "Cut Level",
        y = "Average Price") +
   scale_y_continuous(labels = scales::comma) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -274,7 +274,7 @@ cutplot4=ggplot(median_price_by_cut, aes(x = cut, y = median_price)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 3) +
   labs(title = "Median Price vs Cut",
-       x = "",
+       x = "Cut Level",
        y = "Median Price") +
   scale_y_continuous(labels = scales::comma) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -304,7 +304,7 @@ colorplot1 = ggplot(Data, aes(x = color)) +
         legend.position = "none") +
   geom_bar(fill = "blue4", alpha = 0.7) +
   labs(title = "Count Plot of Color",
-       x = "",
+       x = "Color Level",
        y = "Count") +
   theme(#plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray"))
@@ -318,7 +318,7 @@ colorplot2 = ggplot(Data, aes(x = color, y = price)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 2)+
   labs(title = "Price Distribution by Color",
-       x = "",
+       x = "Color Level",
        y = "Price") +
   scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -336,7 +336,7 @@ colorplot3 = ggplot(avg_price_by_clarity3, aes(x = color, y = avg_price)) +
         axis.title = element_text(size = 12, face = "bold"),
         legend.position = "none") +
   labs(title = "Average Price by Color",
-       x = "",
+       x = "Color Level",
        y = "Average Price") +
   scale_y_continuous(labels = scales::comma) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -354,7 +354,7 @@ colorplot4 = ggplot(median_price_by_color, aes(x = color, y = median_price)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 3) +
   labs(title = "Median Price vs Color",
-       x = "",
+       x = "Color Level",
        y = "Median Price") +
   scale_y_continuous(labels = scales::comma) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -386,7 +386,7 @@ caratplot1 = ggplot(Data, aes(x = carat.cat2)) +
         legend.position = "none") +
   geom_bar(fill = "blue4", alpha = 0.7) +
   labs(title = "Count Plot of Carat Category",
-       x = "",
+       x = "Carat Quartile",
        y = "Count") +
   theme(#plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray"))
@@ -401,7 +401,7 @@ caratplot2 = ggplot(Data, aes(x = carat, y = price)) +
   geom_point(color = "blue4", alpha = 0.7, size = 2)+
   geom_smooth(method=lm,color="#EB5F0C",alpha=0.5,se = FALSE)+
   labs(title = "Price Distribution by Carat",
-       x = "",
+       x = "Carat Quartile",
        y = "Price") +
   scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -419,7 +419,7 @@ caratplot3 = ggplot(avg_price_by_carat3, aes(x = carat.cat2, y = avg_price)) +
         axis.title = element_text(size = 12, face = "bold"),
         legend.position = "none") +
   labs(title = "Average Price by Carat Category",
-       x = "",
+       x = "Carat Quartile",
        y = "Average Price") +
   scale_y_continuous(labels = scales::comma) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -437,7 +437,7 @@ caratplot4 = ggplot(median_price_by_carat, aes(x = carat.cat2, y = median_price)
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 3) +
   labs(title = "Median Price vs Carat Category",
-       x = "",
+       x = "Carat Quartile",
        y = "Median Price") +
   scale_y_continuous(labels = scales::comma) +
   theme(#plot.background = element_rect(fill = "white"),
@@ -597,7 +597,7 @@ tab11 = round(prop.table(tab11, 1) * 100, 2)
 
 When looking at the graph, there is no distinct pattern of color in any category of cut. This claim is unable to be supported by the dataset presented. 
 
-### 3. Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale. In order to visualize this claim, a bar graph comparing clarity against color and a proportion table in Figure X and Table Y were made.
+### 3. Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale. To confirm this claim, colorless diamonds (diamonds with color of grades D, E or F) should typically have high clarity. In order to visualize this claim, a bar graph comparing clarity against color and a proportion table in Figure X and Table Y were made.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
 
@@ -686,7 +686,7 @@ prop_clarity_cut <- round(prop.table(clarity_cut, 1) * 100, 2)
 | IF     | 1    | 11        | 37    | 0           | IF     | 2.04 | 22.45     | 75.51 | 0           |
 | FL     | 0    | 2         | 1     | 0           | FL     | 0    | 66.67     | 33.33 | 0           |
 
-From the bar chart we can see that the FL clarity rating only contained the diamond cuts Very Good and Ideal. The second highest clarity rating contained Good, Very Good, and Ideal diamond cuts. The clarity ratings SI2 to VS1 contained diamonds with all four cuts. From the bar chart, this claim appears to be supported by the data. For the purpose of looking at this data, the Astor Ideal cut is going to be ignored in the discussion as there were not many diamond purchases with this cut giving very little data. For the SI2 clarity, 52.12% of the cuts were Ideal which is the second highest cut ranking overall. Except for the Astor Ideal cut, the Good cut had the lowest percentage at 8.48%. The SI1 clarity showed similar results with, 61.73% of the cuts being Idea and the cut of Good had the lowest percentage at 7.82%. For VS2, the Ideal cut was highest at 61.21% and Good was lowest at 6.07. Finally, the VS1 cut had the highest percentage of Ideal cuts at 58.37% and the Good cut was the lowest at 5.58%. From these proportions, the claim that better diamond cuts hide imperfections in the diamond appears to be true. 
+From the bar chart we can see that the FL clarity rating only contained the diamond cuts Very Good and Ideal. The second highest clarity rating contained Good, Very Good, and Ideal diamond cuts. The clarity ratings SI2 to VS1 contained diamonds with all four cuts. From the bar chart, this claim appears to be supported by the data. For the purpose of looking at this data, the Astor Ideal cut is going to be ignored in the discussion as there were not many diamond purchases with this cut giving very little data. For the SI2 clarity, 52.12% of the cuts were Ideal which is the second highest cut ranking overall. Except for the Astor Ideal cut, the Good cut had the lowest percentage at 8.48%. The SI1 clarity showed similar results with, 61.73% of the cuts being Ideal and the cut of Good had the lowest percentage at 7.82%. For VS2, the Ideal cut was highest at 61.21% and Good was lowest at 6.07. Finally, the VS1 cut had the highest percentage of Ideal cuts at 58.37% and the Good cut was the lowest at 5.58%. From these proportions, the claim that better diamond cuts hide imperfections in the diamond appears to be true. 
 
 
 ### 5. Blue Nile claims that diamond carat weights that are slightly less (0.4, 0.9, 1.4, 1.9) than typical carat values (0.5, 1.0, 1.5, or 2.0) cost significantly less than getting a typical carat weight.
