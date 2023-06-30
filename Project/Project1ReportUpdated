@@ -1030,6 +1030,7 @@ acf(result.ystar$residuals, main = "ACF with Log Transformation of y", ylim = c(
 
 As indicated by the scatter and residual plots, the log transformation on the response variable does not resolve all of the assumption violations either. The "Residual vs. Fitted" plot still displays unevenly distributed residuals across the horizontal axis. In addition, there are multiple data points far from the QQ line in the "Q-Q Residuals" plot. However, the variance remains relatively constant in the "Residuals vs. Fitted" plot. This indicates that the assumption that the errors have constant variance is met. Moreover, the ACF plot indicates that after the log transformation of the response variable, the data remains to appear independent.
 
+Another transformation on the data is necessary since not all of the assumptions have been met with the log transformation on the response variable. When the errors have constant variance but do not have a mean of 0, a transformation on the predictor helps find the appropriate shape to relate the variables. Because the approximate shape of the scatter plot is logarithmic, a log transformation will be performed on the predictor variable. 
 **Log x and y Transformed**
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
