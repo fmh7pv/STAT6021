@@ -28,13 +28,14 @@ library(tidyverse)
 library(ggthemes)
 library(patchwork)
 library(cowplot)
-Data = read.csv("/Users/karolinastraznikiewicz/Desktop/diamonds4.csv")
+Data = read.csv("/Users/alexaowen/Documents/Grad School/Summer 2023/STAT 6021/Project 1/diamonds4.csv")
 ```
 
+\newpage
 
 # Summary 
 
-With the goal of understanding what characteristics influence diamond price and whether or not diamond characteristics depend on one another, we analyze univariate, bivariate and multivariate visualizations of the price, clarity, cut, color, and carat of diamonds. After discovering reason to conclude that carat has the most impact on the price of diamonds, we created a simple linear regression model with carat as the predictor variable and price as the response variable. The relationships analyzed were chosen to determine what characteristic or characteristic primarily determine cost and to investigate diamond characteristic relationship claims by Blue Nile. The first Blue Nile claim that we investigated states that as carat weight increases, the other characteristics of the diamond become more visible appears to be supported by the data. However, this claim was only supported by Flawless (FL) diamonds, and not diamonds of a lower clarity level, leaving the results to be slightly inconclusive without statistical testing being completed. A similar claim was made that diamond cut can influence its color. The results of this chart appeared to support this claim as all diamond cuts at almost 50% of each cut's color were in the top three color rankings, F, E, and D. The fourth claim made by Blue Nile is that colorless diamonds receive higher clarity and color ratings. This claim appeared to be supported by the FL clarity ranking that only included D and F coloring. The remaining clarity levels appear to show a more inconclusive result as the diamond coloring seems to be more evenly spread by clarity ratings. For the fifth claim that many diamond characteristics can be hidden by diamond cut, the chart appears to support this claim. For every diamond clarity, the ideal cut, which is the second high cut ranking, had the highest percentage. From this, it appears that a better diamond cut is typically picked for all clarity levels to hide flaws in the diamond. Claim 6 made by Blue Nile stated that diamond carat weights that are slightly less than typical carat values cost less than getting a normal carat weight. This claim appeared to be supported by carat values below 1.0. For carat values below 1.0, the claim appears to be backed up because, for example, diamonds with a carat size of 0.4 showed lower prices on the graph than diamonds with a carat value of 0.5. Above a carat value of 1.0, the amount of data for each carat decreased, making it difficult to draw assumptions from the graphs.
+With the goal of understanding what characteristics influence diamond price and whether or not diamond characteristics depend on one another, we analyze univariate, bivariate and multivariate visualizations of the price, clarity, cut, color, and carat of diamonds. After discovering reason to conclude that carat has the most impact on the price of diamonds, we created a simple linear regression model with carat as the predictor variable and price as the response variable. The relationships analyzed were chosen to determine what characteristic primarily determine cost and to investigate diamond characteristic relationship claims by Blue Nile. The first Blue Nile claim that we investigated states that as carat weight increases, the other characteristics of the diamond become more visible appears to be supported by the data. However, this claim was only supported by Flawless (FL) diamonds, and not diamonds of a lower clarity level, leaving the results to be slightly inconclusive without statistical testing being completed. A similar claim was made that diamond cut can influence its color. The results of this chart appeared to support this claim as all diamond cuts at almost 50% of each cut's color were in the top three color rankings, F, E, and D. The fourth claim made by Blue Nile is that colorless diamonds receive higher clarity and color ratings. This claim appeared to be supported by the FL clarity ranking that only included D and F coloring. The remaining clarity levels appear to show a more inconclusive result as the diamond coloring seems to be more evenly spread by clarity ratings. For the fifth claim that many diamond characteristics can be hidden by diamond cut, the chart appears to support this claim. For every diamond clarity, the ideal cut, which is the second high cut ranking, had the highest percentage. From this, it appears that a better diamond cut is typically picked for all clarity levels to hide flaws in the diamond. Claim 6 made by Blue Nile stated that diamond carat weights that are slightly less than typical carat values cost less than getting a normal carat weight. This claim appeared to be supported by carat values below 1.0. For carat values below 1.0, the claim appears to be backed up because, for example, diamonds with a carat size of 0.4 showed lower prices on the graph than diamonds with a carat value of 0.5. Above a carat value of 1.0, the amount of data for each carat decreased, making it difficult to draw assumptions from the graphs.
 
 The final and main claim made by Blue Nile was the diamond cut is the variable that drives price. Based on the graph created, this claim cannot be supported. The chart showed that for every cut, except for the diamond cut that is specific to Blue Nile, the Astor Ideal, the median cost by cut was not that different as the cut increased. In an effort to learn which variable drove price, we looked into the color, clarity, and carat of diamonds. The chart for carat vs. price showed that it appeared that it was the carat that drove the price of the diamond rather than the cut, color, or clarity of the diamond. The seventh claim made by Blue Nile can be further supported by the results of the linear regression model. The model had a statistically significant result which supports that carat weight influences price. 
 
@@ -45,7 +46,7 @@ The final and main claim made by Blue Nile was the diamond cut is the variable t
 
 ### Data Set
 
-This data set contains information one 1214 diamonds available for sale on **Blue Nile** (http://www.bluenile.com), a renowned online diamond retailer. The data set encompasses various attributes of the diamonds, including carat weight, clarity, color, cut, and price. The data was collected from **Blue Nile's** website, capturing a diverse range of diamonds offered by the company.
+This data set contains information one 1214 diamonds available for sale on **[Blue Nile]** (http://www.bluenile.com), a renowned online diamond retailer. The data set encompasses various attributes of the diamonds, including carat weight, clarity, color, cut, and price. The data was collected from **Blue Nile's** website, capturing a diverse range of diamonds offered by the company.
 
 Blue Nile is a prominent online jewelry retailer specializing in diamonds and engagement rings. Established in 1999, it has become a trusted destination for customers seeking high-quality diamonds at competitive prices. **Blue Nile** offers a wide selection of certified diamonds sourced from reputable suppliers around the world. 
 
@@ -133,7 +134,7 @@ The first diamond characteristic's effect on price to be analyzed is clarity.
 
 ### Price by Clarity 
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 5, fig.width = 7,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4, fig.width = 6, fig.align='center'}
 clarityprice1 = ggplot(Data, aes(x = clarity)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
@@ -215,7 +216,7 @@ Next, Figure 2 provides into the relationship between diamond cut and price.
 
 ### Price by Cut
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4, fig.width = 6, fig.align='center'}
 cutplot1 = ggplot(Data, aes(x = cut)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
@@ -295,7 +296,7 @@ The next diamond characteristic's effect on price to be studied is price.
 
 ### Price by Color
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4, fig.width = 6, fig.align='center'}
 colorplot1 = ggplot(Data, aes(x = color)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
@@ -374,7 +375,7 @@ The analysis of Graph 3 reveals a notable trend regarding the color of diamonds 
 Finally, Figure 4 displays the effect that carat has on price.
 
 ### Price by Carat
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4, fig.width = 6, fig.align='center'}
 Data <- Data %>%
   mutate(carat.cat2 = cut(carat, breaks =c(-Inf, .4, .52, 1, Inf), labels = c("1st", "2nd", "3rd", "4th")))
 
@@ -498,7 +499,7 @@ The analysis of Graph 4 reveals a clear and significant rising trend between the
 
 ### 1. Blue Nile claims that as you go up in carat weight, other characteristics become more visible, implying that diamonds of higher carat weight, blemishes become more obvious. Therefore, one can assume that buyers and sellers prioritize high clarity for diamonds of a higher carat. We investigate this claim in Figure .
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5, fig.align='center'}
 
 claim2plot1 = ggplot(subset(Data, !is.na(carat.cat)), aes(x=clarity, fill=carat.cat2))+
   theme_minimal() +
@@ -563,7 +564,7 @@ claim3plot1 = ggplot(Data, aes(x = cut, fill = color))+
         axis.title = element_text(size = 12, face = "bold"),
         legend.title = element_text(size = 10, face = "bold")) +
   geom_bar(position = "fill") +
-  labs(title = "Graph 7 \n Distribution of Color in Each Cut",
+  labs(title = "Graph 6 \n Distribution of Color in Each Cut",
        x = "Cut",
        y = "Proportion of Diamonds",
        fill = "Color") +
@@ -595,7 +596,7 @@ tab11 = round(prop.table(tab11, 1) * 100, 2)
 | Ideal       | 0 | 7.17 | 15.29 | 12.86 | 15.29 | 17.86 | 14.21 | 17.32 |
 | Astor Ideal | 0 | 10   | 15    | 5     | 10    | 35    | 10    | 15    |
 
-When looking at the graph, there is no distinct pattern of color in any category of cut. This claim is unable to be supported by the dataset presented. 
+When looking at the graph, there is no distinct pattern of color in any category of cut. This claim is unable to be supported by the data set presented. 
 
 ### 3. Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale. To confirm this claim, colorless diamonds (diamonds with color of grades D, E or F) should typically have high clarity. In order to visualize this claim, a bar graph comparing clarity against color and a proportion table in Figure X and Table Y were made.
 
@@ -608,7 +609,7 @@ claim4plot1 = ggplot(Data, aes(x = clarity, fill = color))+
         axis.title = element_text(size = 12, face = "bold"),
         legend.title = element_text(size = 10, face = "bold")) +
   geom_bar(position = "fill") +
-  labs(title = "Graph 8 \n Distribution of Color for Each Clarity",
+  labs(title = "Graph 7 \n Distribution of Color for Each Clarity",
        x = "Clarity",
        y = "Proportion of Diamonds",
        fill = "Color") +
@@ -660,7 +661,7 @@ ggplot((Data) , aes(x=clarity, fill=cut))+
         legend.position = "bottom") +
   scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46","blue4")) +
   labs(x="Clarity", y="Proportion of Diamonds", 
-       title="Graph 9 \n Distribution of Cut for Each Clarity ",
+       title="Graph 8 \n Distribution of Cut for Each Clarity ",
        fill = "Cut")
 ```
 
@@ -691,7 +692,7 @@ From the bar chart we can see that the FL clarity rating only contained the diam
 
 ### 5. Blue Nile claims that diamond carat weights that are slightly less (0.4, 0.9, 1.4, 1.9) than typical carat values (0.5, 1.0, 1.5, or 2.0) cost significantly less than getting a typical carat weight.
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE}
+```{r,echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4, fig.width = 6, fig.align='center' }
 carat_.5 <- Data %>% 
   filter(between(carat,.4,.6))
 
@@ -761,7 +762,7 @@ graph_2<- ggplot((carat_2), aes(x=carat, y=price))+
 patchwork7 = (graph_.5 | graph_1) / (graph_1.5 | graph_2)
 patchwork7 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
                             tag_sep = '.', tag_suffix = ':',
-                            title = 'Graph 10') &
+                            title = 'Graph 9') &
    theme(plot.tag.position = c(0, 1),
         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
@@ -770,7 +771,7 @@ From the data this claim is best supported by lower carat weights such as a half
 
 ### 6. The main claim made by Blue Nile is that diamond cut drives the price of the diamond. If this claim is true, we should expect to see an increase in median prices as the cut quality increases and the other variables of carat, color, and clarity should not show as much difference as quality or weight increases. 
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4, fig.width = 6, fig.align='center'}
 
 ystar<-log(Data$price)
 Data<-data.frame(Data,ystar)
@@ -888,7 +889,7 @@ graph14 = ggplot(Data, aes(x = xstar, y = ystar)) +
 patchwork8 = (graph11 | graph12) / (graph13 | graph14)
 patchwork8 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
                             tag_sep = '.', tag_suffix = ':',
-                            title = 'Graph 11') &
+                            title = 'Graph 10') &
    theme(plot.tag.position = c(0, 1),
         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
@@ -949,13 +950,13 @@ cor (Data$price, Data$carat)
 From the box plot that compares diamond cut and price, the claim does not appear to be true. As stated, if cut drove price, then a diamond cut of Good should have the lowest median price while better diamond cuts should have higher median prices. In reality, what is shown is that as cut quality increases, except for Astor Ideal, the median diamond price decreases. It should be noted that Astor Ideal is Blue Nile's exclusive cut which could impact the price. For a diamond cut of Good, the median diamond cost was 1,903 dollars, for Very Good it was 1,744.5 dollars, and for Ideal it was 1354.0 dollars, and for Astor Ideal it was 2854.0 dollars. In an attempt to see what characteristics drive the cost, box plots were also created for diamond clarity and color against price and a scatter plot was created for carat and price. The box plot for clarity shows that except for Flawless (FL) diamonds, the median price of the diamonds is relatively similar from low clarity to high clarity. The box plot for diamond color showed a similar result with most medians being close to 1,500 dollars. The scatter plot for carat against price showed a positive r value of 0.82. This suggests that as carat weight increases, price does as well. 
 To further confirm that carat has a stronger relationship with price than cut, a multivariate scatter plot was created to analyze how carat, cut and price relate to one another.
 
-```{r 1r, include=TRUE}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 6,fig.align='center'}
 Data <- Data %>%
   mutate(carat.cat = cut(carat, breaks =c(-Inf, .4, .52, 1, Inf)))
 ggplot(subset(Data, !is.na(carat)), aes(x=carat, y=price, color = cut))+
   geom_point()+
   scale_size(range=c(0.1,12))+
-  labs(title = "Diamond Carat vs. Diamond Price by Diamond Cut",
+  labs(title = "Graph 11 \nDiamond Carat vs. Diamond Price by Diamond Cut",
        x = "Carat",
        y = "Price")+
   scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46","blue4")) +
@@ -969,7 +970,7 @@ As expected, the price of the diamond tends to increase as the carat size increa
 
 A simple linear regression model helps to further explore the relationship between the price of a diamond and the diamond's carat. The first step to fitting this model is to see if the relationship between the response variable (price of a diamond) and the predictor variable (the diamond's carat) meet the assumptions for a regression model without any transformations. To make this assessment, a scatter plot, residual plot and ACF plot are created.
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 5,fig.align='center'}
 ggplot(Data, aes(x = carat, y = price)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
@@ -979,7 +980,7 @@ ggplot(Data, aes(x = carat, y = price)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 2)+
   geom_smooth(method=lm,color="#EB5F0C",alpha=0.5,se = FALSE)+
-  labs(title = "Price Distribution by Carat",
+  labs(title = "Graph 12 \nPrice Distribution by Carat",
        x = "Carat",
        y = "Price") +
   scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
@@ -987,14 +988,14 @@ ggplot(Data, aes(x = carat, y = price)) +
         panel.grid.major = element_line(color = "lightgray")) 
 ```
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
 result<-lm(price~carat, data=Data)
 par(mfrow = c(2, 2))
 plot(result)
 ```
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
-acf(result$residuals, main = "ACF of Residuals with No Transformations", ylim = c(-.2, .2))
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 2.7, fig.width = 5,fig.align='center'}
+acf(result$residuals, main = "Graph 13 \nACF of Residuals with No Transformations", ylim = c(-.2, .2))
 ```
 
 The scatter plot and residual plot indicate that the errors do not have a mean of 0, do not have constant variance, and are not normally distributed. In the "Residuals vs. Fitted" plot, the residuals are not evenly distributed across the horizontal axis. For fitted values less than 100,000, the majority of data points lie below the horizontal axis. Meanwhile, for fitted values over 100,000, the majority of data points lie above the horizontal axis. Thus, the errors do not have a mean of 0. Additionally, the residuals do not have similar vertical variation in the "Residuals vs. Fitted" plot; instead, the variance increases as the fitted values increase. This leads to the conclusion that the errors do not have constant variance. The "Q-Q Residuals" has many data points far from the QQ line, indicating that the errors do not follow a normal distribution. On the other hand, the ACF plot shows that lags greater than zero are mostly insignificant. Therefore, there is no evidence that the data are dependent on each other.
@@ -1002,7 +1003,7 @@ The scatter plot and residual plot indicate that the errors do not have a mean o
 Since some regression assumptions are violated, a transformation of the data is necessary. The response variable should be transformed first since the response variable affects the shape of the relationship and the vertical spread of the data points. 
 
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center',fig.height = 3.5}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center',fig.height = 2.7, fig.width = 5}
 MASS::boxcox(result,lambda = seq(0, 0.5, 0.1))
 ```
 
@@ -1010,7 +1011,7 @@ The above box cox plot helps us identify our lambda value for the transformation
 
 **Lambda 0.3 Transformed**
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 5,fig.align='center'}
 ystar1<-(Data$price)**.3
 Data<-data.frame(Data,ystar1)
 ggplot(Data, aes(x = carat, y = ystar1)) +
@@ -1022,7 +1023,7 @@ ggplot(Data, aes(x = carat, y = ystar1)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 2)+
   geom_smooth(method=lm,color="#EB5F0C",alpha=0.5,se = FALSE)+
-  labs(title = "Price^0.3 Distribution by Carat",
+  labs(title = "Graph 14 \nPrice^0.3 Distribution by Carat",
        x = "Carat", 
        y = "Price^0.3") +
   #scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
@@ -1030,7 +1031,7 @@ ggplot(Data, aes(x = carat, y = ystar1)) +
         panel.grid.major = element_line(color = "lightgray")) 
 ```
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
 result.ystar1<-lm(ystar1~carat, data=Data)
 par(mfrow = c(2, 2))
 plot(result.ystar1)
@@ -1040,7 +1041,7 @@ The transformation on the response variable with lambda = 0.3 does not resolve a
 
 **Log y Transformed**
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 5,fig.align='center'}
 ystar<-log(Data$price)
 Data<-data.frame(Data,ystar)
 
@@ -1053,7 +1054,7 @@ ggplot(Data, aes(x = carat, y = ystar)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 2)+
   geom_smooth(method=lm,color="darkorange",alpha=0.5,se = FALSE)+
-  labs(title = "Log Price Distribution by Carat",
+  labs(title = "Graph 15 \nLog Price Distribution by Carat",
        x = "Carat",
        y = "Log Price") +
   #scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
@@ -1061,21 +1062,21 @@ ggplot(Data, aes(x = carat, y = ystar)) +
         panel.grid.major = element_line(color = "lightgray")) 
 ```
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
 result.ystar<-lm(ystar~carat, data=Data)
 par(mfrow = c(2, 2))
 plot(result.ystar)
 ```
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
-acf(result.ystar$residuals, main = "ACF with Log Transformation of y", ylim = c(-.2, .2))
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 2.7, fig.width = 5,fig.align='center'}
+acf(result.ystar$residuals, main = "Graph 16 \nACF with Log Transformation of y", ylim = c(-.2, .2))
 ```
 
 As indicated by the scatter and residual plots, the log transformation on the response variable does not resolve all of the assumption violations either. The "Residual vs. Fitted" plot still displays unevenly distributed residuals across the horizontal axis. In addition, there are multiple data points far from the QQ line in the "Q-Q Residuals" plot. However, the variance remains relatively constant in the "Residuals vs. Fitted" plot. This indicates that the assumption that the errors have constant variance is met. Moreover, the ACF plot indicates that after the log transformation of the response variable, the data remains to appear independent.
 
 **Log x and y Transformed**
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 5,fig.align='center'}
 xstar<-log(Data$carat)
 Data<-data.frame(Data,xstar)
 
@@ -1088,7 +1089,7 @@ ggplot(Data, aes(x = xstar, y = ystar)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 1)+
   geom_smooth(method=lm,color="darkorange",alpha=0.5,se = FALSE)+
-  labs(title = "Log Price Distribution by Log Carat",
+  labs(title = "Graph 17 \nLog Price Distribution by Log Carat",
        x = "Log Carat",
        y = "Log Price") +
   #scale_y_continuous(breaks = seq(0, max(Data$price), by = 50000)) +
@@ -1096,14 +1097,14 @@ ggplot(Data, aes(x = xstar, y = ystar)) +
         panel.grid.major = element_line(color = "lightgray"))
 ```
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center'}
+```{r,echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
 result.xstar<-lm(ystar~xstar, data=Data)
 par(mfrow = c(2, 2))
 plot(result.xstar)
 ```
 
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3, fig.width = 4.5,fig.align='center'}
-acf(result.xstar$residuals, main = "ACF LogResponse ~ LogPredictor", ylim = c(-.2, .2))
+```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 2.7, fig.width = 5,fig.align='center'}
+acf(result.xstar$residuals, main = "Graph 18 \nACF LogResponse ~ LogPredictor", ylim = c(-.2, .2))
 ```
 
 After both the log transformations on the response and predictor variables, the scatter plot and residual plot indicate that the errors have a mean of 0, have constant variance and are normally distributed. The "Residuals vs. Fitted" plot shows that residuals are evenly distributed across the horizontal axis and that the residuals have similar vertical variation. In the "Q-Q Residuals" plot, most data points are close to the QQ line, indicating that the errors follow a normal distribution. The ACF plot shows that lags greater than zero are mostly insignificant, so the data can be assumed to be independent.
@@ -1122,21 +1123,3 @@ In order to create an appropriate linear model and not violate assumptions, the 
 Referring to the transformations performed and the above summary of the regression model, the regression equation to estimate the price of a diamond $\hat{y}$ based on the carat of the diamond $x$ is $log(\hat{y}) = 1.94402log(x)+8.521208$. The scatter plot shows that as the carat of a diamond increases, so does the price of the diamond. The coefficient of the $log(x)$ term, ($1.94402$), is greater than 1, indicating that as the carat of the diamond continues to increase, the price of the diamond increases as a faster rate. This means that the price per carat of the diamond tends to increase as the number of carats increases. Since there are few diamonds on the market over 2 carats, it makes sense that the rarity of diamonds over two carats would sell for a more expensive rate.
 
 This can be further confirmed as the p-value for the value x.star. It is much smaller than 0.05, meaning that the null hypothesis of the slope being zero or insignificant, contextually that carat as no affect on price, is rejected. The alternative hypothesis that the slope isn’t zero or that carat does have an affect on price is accepted. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
