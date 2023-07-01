@@ -1121,8 +1121,15 @@ After both the log transformations on the response and predictor variables, the 
 summary(result.xstar)
 ```
 
-In order to create an appropriate linear model and not violate assumptions, the $x$ and $y$ variables both are transformed.
-
 Referring to the transformations performed and the above summary of the regression model, the regression equation to estimate the price of a diamond $\hat{y}$ based on the carat of the diamond $x$ is $log(\hat{y}) = 1.94402log(x)+8.521208$. The scatter plot shows that as the carat of a diamond increases, so does the price of the diamond. The coefficient of the $log(x)$ term, ($1.94402$), is greater than 1, indicating that as the carat of the diamond continues to increase, the price of the diamond increases as a faster rate. This means that the price per carat of the diamond tends to increase as the number of carats increases. Since there are few diamonds on the market over 2 carats, it makes sense that the rarity of diamonds over two carats would sell for a more expensive rate.
 
-This can be further confirmed as the p-value for the value x.star. It is much smaller than 0.05, meaning that the null hypothesis of the slope being zero or insignificant, contextually that carat as no affect on price, is rejected. The alternative hypothesis that the slope isn’t zero or that carat does have an affect on price is accepted. 
+To determine the statistical significance of our model, we perform a hypothesis test.
+
+$H_0:$ xstar $= 0$
+
+$H_a:$ xstar $\neq 0$
+
+The null hypothesis is that xstar is equal to $0$ (indicating that carat value has no effect on the price of a diamond and thus, there is no linear association between the variables). The alternative hypothesis is that xstar is not equal to $0$ (indicating that the carat value has an effect on the price of the diamond and there is linear association between the variables).
+In order to create an appropriate linear model and not violate assumptions, the $x$ and $y$ variables both are transformed.
+
+The p-value ($<2e-16$ for x.star is much smaller than 0.05, meaning that the null hypothesis of the xstar coefficient being zero, is rejected. The alternative hypothesis that the xstar coefficient that carat has an affect on price is accepted. 
