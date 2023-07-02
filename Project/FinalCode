@@ -782,7 +782,8 @@ The scatter plot (Graph 10) and residual plots (Graph 11) indicate that the erro
 
 Since some regression assumptions are violated, a transformation of the data is necessary. The response variable should be transformed first since the response variable affects the shape of the relationship and the vertical spread of the data points. 
 
-
+\centerline {\bfseries{Graph 13}}
+\centerline {\bfseries{Box Cox for Carat vs. Price Transformations}}
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center',fig.height = 2.7, fig.width = 5}
 MASS::boxcox(result,lambda = seq(0, 0.5, 0.1))
 ```
@@ -803,7 +804,7 @@ ggplot(Data, aes(x = carat, y = ystar1)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 2)+
   geom_smooth(method=lm,color="#EB5F0C",alpha=0.5,se = FALSE)+
-  labs(title = "Graph 13 \nPrice^0.3 Distribution by Carat",
+  labs(title = "Graph 14 \nPrice^0.3 Distribution by Carat",
        x = "Carat", 
        y = "Price^0.3") +
   #scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
@@ -815,7 +816,7 @@ ggplot(Data, aes(x = carat, y = ystar1)) +
 result.ystar1<-lm(ystar1~carat, data=Data)
 par(mfrow = c(2, 2))
 plot(result.ystar1)
-mtext("Graph 14", side = 3, line = - 2, outer = TRUE)
+mtext("Graph 15", side = 3, line = - 2, outer = TRUE)
 ```
 
 The transformation on the response variable with lambda = 0.3 does not resolve any of the assumption violations. In the "Residuals vs. Fitted" plot of Graph 15, the residuals remain unevenly distributed across the horizontal axis and the variance increases as the fitted values increase. Furthermore, the "Q-Q Residuals" plot of Graph 15 has many data points far from the QQ line. Since this transformation has proven ineffective on its own, the first transformation on the data will be replaced by a log transformation. A log transformation on the response variable is preferred over the lambda = 0.3 transformation so that the estimated coefficients and slope can easily be interpreted. 
@@ -835,7 +836,7 @@ ggplot(Data, aes(x = carat, y = ystar)) +
         legend.position = "none") +
   geom_point(color = "blue4", alpha = 0.7, size = 2)+
   geom_smooth(method=lm,color="darkorange",alpha=0.5,se = FALSE)+
-  labs(title = "Graph 15 \nLog Price Distribution by Carat",
+  labs(title = "Graph 16 \nLog Price Distribution by Carat",
        x = "Carat",
        y = "Log Price") +
   #scale_y_continuous(labels = scales::comma, breaks = seq(0, max(Data$price), by = 50000)) +
@@ -847,7 +848,7 @@ ggplot(Data, aes(x = carat, y = ystar)) +
 result.ystar<-lm(ystar~carat, data=Data)
 par(mfrow = c(2, 2))
 plot(result.ystar)
-mtext("Graph 16", side = 3, line = - 2, outer = TRUE)
+mtext("Graph 17", side = 3, line = - 2, outer = TRUE)
 ```
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 2.7, fig.width = 5,fig.align='center'}
