@@ -135,7 +135,7 @@ Data <- Data %>%
   mutate(carat.cat = cut(carat, breaks =c(-Inf, .4, .52, 1, Inf), labels = c("1st Quartile", "2nd Quartile", "3rd Quartile", "4th Quartile")))
 ```
 
-To complete this analysis, the graphs in Figures 1, 2, 3 and 4 display the distribution of diamonds by clarity, cut, color and carat, respectively. The variety of metrics in the graphs (count, price, average price and median price) provides comprehensive insight into how (if at all) the diamond characteristic and price are related.
+To complete this analysis, the Graphs 1, 2, 3, and 4 display the distribution of diamonds by clarity, cut, color and carat, respectively. The variety of metrics in the graphs (count, price, average price, and median price) provides comprehensive insight into how (if at all) the diamond characteristic and price are related.
 
 ### Price by Clarity 
 
