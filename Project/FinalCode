@@ -666,7 +666,7 @@ carat_.5 <- Data %>%
   filter(between(carat,.4,.6))
 
 carat_1 <- Data %>% 
-  filter(between(carat,.9,1.1))
+  filter(between(carat,.9,1.1)) 
 
 carat_1.5 <- Data %>% 
   filter(between(carat,1.4,1.6))
