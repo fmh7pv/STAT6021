@@ -510,7 +510,13 @@ As expected, the price of the diamond tends to increase as the carat size increa
 #    theme(plot.tag.position = c(0, 1),
 #         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
-
+Blue Nile claims that as you go up in carat weight, other characteristics become more visible, implying that
+diamonds of higher carat weight, are the more obvious blemishes. Therefore, one can assume that buyers and
+sellers prioritize high clarity for diamonds of a higher carat. Graph 6 shows that of diamonds with the highest
+clarity, Flawless (FL), over 50% were in the highest carat quartile as well. However, in all other categories, there
+is no distinct difference in the distribution of carat and level of clarity. This leads to the hypothesis that for a
+diamond’s carat to have an effect on its clarity, the diamond needs to be over 1 carat. To see how combinations
+of carat and clarity interact with price of the diamond, a scatter plot is created.
 ### 1. Blue Nile claims that as you go up in carat weight, other characteristics become more visible, implying that diamonds of higher carat weight, blemishes become more obvious. Therefore, one can assume that buyers and sellers prioritize high clarity for diamonds of a higher carat. We investigate this claim in Figure .
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5, fig.align='center'}
