@@ -292,7 +292,7 @@ patchwork2 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
 
-The analysis of Graph 2 reveals interesting findings regarding the cut of diamonds. It is noteworthy that the majority of diamonds available for sale on the website were classified as having an ideal cut. Surprisingly, as the cut quality progresses from good to very good, ideal, and Astor Ideal, the average and median prices show a decreasing trend. However, there is one exception to this pattern, with Astor Ideal diamonds having the highest median price among all cuts (but only a few observations in data set). The general indirect relationship between cut quality and diamond price debunks that Blue Nile's claim of cut driving diamond price. Upon examining the scatterplot, it becomes evident that a significant number of diamonds cluster within the price range of 0 to 50k dollars. However, it is interesting to note that there are instances of individual diamonds with better cuts that have substantially higher prices. While the majority of diamonds fall within a certain price range, diamonds with superior cuts can command significantly higher prices. 
+Blue Nile claims, "the cut of the diamond that can be the biggest factor in the price tag." Given this statement, the analysis of Graph 2 reveals interesting findings regarding the cut of diamonds. It is noteworthy that the majority of diamonds available for sale on the website were classified as having an ideal cut. Surprisingly, as the cut quality progresses from good to very good, ideal, and Astor Ideal, the average and median prices show a decreasing trend. However, there is one exception to this pattern, with Astor Ideal diamonds having the highest median price among all cuts (but only a few observations in data set). The general indirect relationship between cut quality and diamond price debunks that Blue Nile's claim of cut driving diamond price. Upon examining the scatterplot, it becomes evident that a significant number of diamonds cluster within the price range of 0 to 50k dollars. However, it is interesting to note that there are instances of individual diamonds with better cuts that have substantially higher prices. While the majority of diamonds fall within a certain price range, diamonds with superior cuts can command significantly higher prices. 
 
 ### Price by Color
 
@@ -456,7 +456,6 @@ patchwork4 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
 cor (Data$price, Data$carat)
 ```
 The analysis of Graph 4 and high, positive correlation value reveals a clear and significant rising trend between the carat weight of diamonds and their prices. As the number of carats increases, the pricing also increases, indicating that diamond buyers are willing to pay more for larger stones. Consistently, the heaviest diamonds in terms of carat weight exhibit substantially higher prices compared to smaller diamonds. This finding aligns with the understanding that larger diamonds are rarer and more coveted, leading to a higher market value. The data set also reveals that most diamonds purchased by buyers are within the range of 0 to 2 carats, indicating a common preference (or financial restraint) for diamonds of this size. These findings emphasize the significant impact of carat weight on diamond pricing.
-To further debunk Blue Nile's claim that "cut drives the price of the diamond" and to confirm that instead carat has a stronger relationship with price, we create a multivariate scatter plot to analyze how carat, cut and price relate to one another.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 6,fig.align='center'}
 Data <- Data %>%
@@ -471,6 +470,7 @@ ggplot(subset(Data, !is.na(carat)), aes(x=carat, y=price, color = cut))+
   theme(#plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray"))
 ```
+To further debunk Blue Nile's claim that "cut drives the price of the diamond" and to confirm that instead carat has a stronger relationship with price, we create a multivariate scatter plot to analyze how carat, cut and price relate to one another.
 As expected, the price of the diamond tends to increase as the carat size increases. However, there does not appear to be a consistent pattern with the diamond's cut as price and carat increase. Therefore, graphs 10 and 11 indicate that Blue Nile's implication that cut drives price can be debunked. Instead, it appears that the diamond's carat weight is what drives the cost of the diamond. 
 
 ## Investigation of Blue Nile's Claims
