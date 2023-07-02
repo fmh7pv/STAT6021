@@ -778,7 +778,7 @@ mtext("Graph 11", side = 3, line = - 2, outer = TRUE)
 acf(result$residuals, main = "Graph 12 \nACF of Residuals with No Transformations", ylim = c(-.2, .2))
 ```
 
-The scatter plot and residual plot indicate that the errors do not have a mean of 0, do not have constant variance, and are not normally distributed. In the "Residuals vs. Fitted" plot, the residuals are not evenly distributed across the horizontal axis. For fitted values less than 100,000, the majority of data points lie below the horizontal axis. Meanwhile, for fitted values over 100,000, the majority of data points lie above the horizontal axis. Thus, the errors do not have a mean of 0. Additionally, the residuals do not have similar vertical variation in the "Residuals vs. Fitted" plot; instead, the variance increases as the fitted values increase. This leads to the conclusion that the errors do not have constant variance. The "Q-Q Residuals" has many data points far from the QQ line, indicating that the errors do not follow a normal distribution. On the other hand, the ACF plot shows that lags greater than zero are mostly insignificant. Therefore, there is no evidence that the data are dependent on each other.
+The scatter plot (Graph 10) and residual plots (Graph 11) indicate that the errors do not have a mean of 0, do not have constant variance, and are not normally distributed. In the "Residuals vs. Fitted" plot of Graph 11, the residuals are not evenly distributed across the horizontal axis. For fitted values less than 100,000, the majority of data points lie below the horizontal axis. Meanwhile, for fitted values over 100,000, the majority of data points lie above the horizontal axis. Thus, the errors do not have a mean of 0. Additionally, the residuals do not have similar vertical variation in the "Residuals vs. Fitted" plot; instead, the variance increases as the fitted values increase. This leads to the conclusion that the errors do not have constant variance. The "Q-Q Residuals" plot in Graph 11 has many data points far from the QQ line, indicating that the errors do not follow a normal distribution. On the other hand, Graph 12, the ACF plot, shows that lags greater than zero are mostly insignificant. Therefore, there is no evidence that the data are dependent on each other.
 
 Since some regression assumptions are violated, a transformation of the data is necessary. The response variable should be transformed first since the response variable affects the shape of the relationship and the vertical spread of the data points. 
 
@@ -787,7 +787,7 @@ Since some regression assumptions are violated, a transformation of the data is 
 MASS::boxcox(result,lambda = seq(0, 0.5, 0.1))
 ```
 
-The above box cox plot helps us identify our lambda value for the transformation. Since 1 does not lie in the confidence interval, it is confirmed that a transformation on the response variable is needed. 0 does not lie in the confidence interval, so a log transformation will not be performed initially. Instead, a lambda value of 0.3 is chosen since it lies near the center of the confidence interval.
+The above box cox plot, Graph 13, helps us identify our lambda value for the transformation. Since 1 does not lie in the confidence interval, it is confirmed that a transformation on the response variable is needed. 0 does not lie in the confidence interval, so a log transformation will not be performed initially. Instead, a lambda value of 0.3 is chosen since it lies near the center of the confidence interval.
 
 **Lambda 0.3 Transformed**
 
@@ -818,7 +818,7 @@ plot(result.ystar1)
 mtext("Graph 14", side = 3, line = - 2, outer = TRUE)
 ```
 
-The transformation on the response variable with lambda = 0.3 does not resolve any of the assumption violations. In the "Residuals vs. Fitted" plot, the residuals remain unevenly distributed across the horizontal axis and the variance increases as the fitted values increase. Furthermore, the "Q-Q Residuals" plot has many data points far from the QQ line. Since this transformation has proven ineffective on its own, the first transformation on the data will be replaced by a log transformation. A log transformation on the response variable is preferred over the lambda = 0.3 transformation so that the estimated coefficients and slope can easily be interpreted. 
+The transformation on the response variable with lambda = 0.3 does not resolve any of the assumption violations. In the "Residuals vs. Fitted" plot of Graph 15, the residuals remain unevenly distributed across the horizontal axis and the variance increases as the fitted values increase. Furthermore, the "Q-Q Residuals" plot of Graph 15 has many data points far from the QQ line. Since this transformation has proven ineffective on its own, the first transformation on the data will be replaced by a log transformation. A log transformation on the response variable is preferred over the lambda = 0.3 transformation so that the estimated coefficients and slope can easily be interpreted. 
 
 **Log y Transformed**
 
@@ -854,7 +854,7 @@ mtext("Graph 16", side = 3, line = - 2, outer = TRUE)
 acf(result.ystar$residuals, main = "Graph 17 \nACF with Log Transformation of y", ylim = c(-.2, .2))
 ```
 
-The scatter and residual plots indicate that the log transformation on the response variable does not resolve all of the assumption violations either. The "Residual vs. Fitted" plot still displays unevenly distributed residuals across the horizontal axis. In addition, there are multiple data points far from the QQ line in the "Q-Q Residuals" plot. However, the variance remains relatively constant in the "Residuals vs. Fitted" plot. This indicates that the assumption that the errors have constant variance is met. Moreover, the ACF plot indicates that after the log transformation of the response variable, the data remains to appear independent.
+Graphs 16 and 17 indicate that the log transformation on the response variable does not resolve all of the assumption violations either. The "Residual vs. Fitted" plot of Graph 17 still displays unevenly distributed residuals across the horizontal axis. In addition, there are multiple data points far from the QQ line in the "Q-Q Residuals" plot in Graph 17. However, the variance remains relatively constant in the "Residuals vs. Fitted" plot of Graoh 16. This indicates that the assumption that the errors have constant variance is met. Moreover, Graph 18 indicates that after the log transformation of the response variable, the data remains to appear independent.
 
 **Log x and y Transformed**
 
@@ -890,7 +890,7 @@ mtext("Graph 19", side = 3, line = - 2, outer = TRUE)
 acf(result.xstar$residuals, main = "Graph 20 \nACF LogResponse ~ LogPredictor", ylim = c(-.2, .2))
 ```
 
-After both the log transformations on the response and predictor variables, the scatter plot and residual plot indicate that the errors have a mean of 0, have constant variance and are normally distributed. The "Residuals vs. Fitted" plot shows that residuals are evenly distributed across the horizontal axis and that the residuals have similar vertical variation. In the "Q-Q Residuals" plot, most data points are close to the QQ line, indicating that the errors follow a normal distribution. The ACF plot shows that lags greater than zero are mostly insignificant, so the data can be assumed to be independent.
+After both the log transformations on the response and predictor variables, the scatter plot and residual plot indicate that the errors have a mean of 0, have constant variance, and are normally distributed. In Graph 20, the "Residuals vs. Fitted" plot shows that residuals are evenly distributed across the horizontal axis and that the residuals have similar vertical variation. In the "Q-Q Residuals" plot of Graph 20, most data points are close to the QQ line, indicating that the errors follow a normal distribution. Graph 21, the ACF plot, shows that lags greater than zero are mostly insignificant, so the data can be assumed to be independent.
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.align='center',fig.height = 3.5}
 #MASS::boxcox(result.xstar,lambda =seq(0, 0.7, 0.1))
 ```
