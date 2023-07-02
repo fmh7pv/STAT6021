@@ -470,8 +470,7 @@ ggplot(subset(Data, !is.na(carat)), aes(x=carat, y=price, color = cut))+
   theme(#plot.background = element_rect(fill = "white"),
         panel.grid.major = element_line(color = "lightgray"))
 ```
-To further debunk Blue Nile's claim that "cut drives the price of the diamond" and to confirm that instead carat has a stronger relationship with price, we create a multivariate scatter plot to analyze how carat, cut and price relate to one another.
-As expected, the price of the diamond tends to increase as the carat size increases. However, there does not appear to be a consistent pattern with the diamond's cut as price and carat increase. Therefore, graphs 10 and 11 indicate that Blue Nile's implication that cut drives price can be debunked. Instead, it appears that the diamond's carat weight is what drives the cost of the diamond. 
+To further debunk Blue Nile's claim that "cut drives the price of the diamond" and to confirm that instead carat has a stronger relationship with price, we create a multivariate scatter plot to analyze how carat, cut and price relate to one another. As expected, the price of the diamond tends to increase as the carat size increases. However, there does not appear to be a consistent pattern with the diamond's cut as price and carat increase. Therefore, graphs 10 and 11 indicate that Blue Nile's implication that cut drives price can be debunked. Instead, it appears that the diamond's carat weight is what drives the cost of the diamond. 
 
 ## Investigation of Blue Nile's Claims
 
