@@ -105,6 +105,8 @@ This report aims to investigate the relationship between diamond characteristics
 
 # Data Visualization
 
+With the goal of understanding what characteristics influence diamond price and whether or not diamond characteristics depend on one another, we analyze univariate, bivariate, and multivariate visualizations of the price, clarity, cut, color, and carat of diamonds. 
+
 ```{r,echo=FALSE, warning=FALSE, results='hide', message=FALSE}
 Data$clarity = as.factor(Data$clarity)
 Data$color = as.factor(Data$color)
@@ -130,8 +132,6 @@ Data <- Data %>%
 ```
 
 To complete this analysis, the graphs in Figures 1, 2, 3 and 4 display the distribution of diamonds by clarity, cut, color and carat, respectively. The variety of metrics in the graphs (count, price, average price and median price) provides comprehensive insight into how (if at all) the diamond characteristic and price are related.
-
-The first diamond characteristic's effect on price that we analyze is clarity. 
 
 ### Price by Clarity 
 
@@ -213,8 +213,6 @@ It is evident in Graph 1 that there are no clear trends indicating significant p
 
 This finding suggests that while clarity can play a role in determining a diamond's price, it may not be the sole influential factor. 
 
-Next, Figure 2 provides into the relationship between diamond cut and price.
-
 ### Price by Cut
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4, fig.width = 6, fig.align='center'}
@@ -293,8 +291,6 @@ patchwork2 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
 The analysis of Graph 2 reveals interesting findings regarding the cut of diamonds. It is noteworthy that the majority of diamonds available for sale on the website were classified as having an ideal cut. Surprisingly, as the cut quality progresses from good to very good, ideal, and Astor Ideal, the average and median prices show a decreasing trend. However, there is one exception to this pattern, with Astor Ideal diamonds having the highest median price among all cuts (but only a few observations in data set).
 Upon examining the scatterplot, it becomes evident that a significant number of diamonds cluster within the price range of 0 to 50k dollars. However, it is interesting to note that there are instances of individual diamonds with better cuts that have substantially higher prices. While the majority of diamonds fall within a certain price range, diamonds with superior cuts can command significantly higher prices. 
 
-The next diamond characteristic's effect on price that we study is color.
-
 ### Price by Color
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4, fig.width = 6, fig.align='center'}
@@ -372,8 +368,6 @@ patchwork3 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
 ```
 
 The analysis of Graph 3 reveals a notable trend regarding the color of diamonds and its impact on pricing. There is a clear rising pricing trend as the color of diamonds improves. This suggests that consumers are willing to pay more for diamonds with better color grades, which typically exhibit a higher level of colorlessness. Similar to previous observations, a significant number of diamonds cluster within the 0 to 50k price range. This finding aligns with the understanding that most buyers have a budget or a general price range in mind when purchasing a diamond. Both the average and median prices for diamonds increase as the color grade improves. This indicates that color plays a substantial role in determining the value and price of a diamond. However, there is one exception to this trend, namely the J-color category. Diamonds with a J-color grade have a surprisingly high median price. This observation suggests that individuals may be willing to sacrifice color in favor of obtaining a larger stone size while still managing to save money on color. This outlier suggests that a characteristic besides color can strongly influence price.
-
-Finally, Figure 4 displays the effect that carat has on price.
 
 ### Price by Carat
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4, fig.width = 6, fig.align='center'}
