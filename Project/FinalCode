@@ -31,15 +31,19 @@ library(cowplot)
 Data = read.csv("/Users/alexaowen/Documents/Grad School/Summer 2023/STAT 6021/Project 1/diamonds4.csv")
 ```
 
-\newpage
-
 # Summary 
 
-The visualizations for clarity and price lead to the conclusion that clarity and price do not have a strong relationship. Interestingly, the charts show that cut and price have an indirect relationship. Since higher diamond cuts cost more than lower diamond cuts, this suggests that cut does not have a strong impact on price of a diamond. On the other hand, color appears to have a fairly direct relationship with price. However, this direct relationship is not particularly strong since there were exceptions. The charts for carat vs. price show the strongest direct relationship, indicating that the carat value primarily drives the price of the diamond rather than the cut, color, or clarity of the diamond. 
+Embarking on the journey of buying an engagement ring is a profound expression of love and commitment. With each step, from exploring various designs to selecting the perfect diamond, the anticipation builds, mirroring the excitement of a future together. As the ring takes shape, so does the anticipation of that magical moment when two souls unite in an everlasting promise, sealed with a ring as timeless as their love.
 
-We choose the relationships between diamond characteristics to analyze based on diamond characteristic relationship claims by Blue Nile. The first Blue Nile claim that we investigate states that as carat weight increases, the other characteristics of the diamond become more visible. The data supports this claim only for diamonds with clarity level of Flawless (FL) and do not support the claim for diamonds of a lower clarity level. Blue Nile makes a similar claim that diamond cut can influence its color. The results of this chart do not support this claim since there are no strong trends between cut and color. The fourth Blue Nile claim that we investigate is that colorless diamonds receive higher clarity and color ratings. Our visualizations support Blue Nile's claim that more colorless diamonds receive higher clarity grades. Regarding Blue Nile's claim that many diamond characteristics can be hidden by diamond cut, the chart appears to support this claim. For every diamond clarity, the ideal cut, which is the second high cut ranking, has the highest percentage. From this, it appears that a better diamond cut is typically picked for all clarity levels to hide flaws in the diamond. The sixth Blue Nile claim that we investigate states that diamond carat weights that are slightly less than typical carat values cost less than getting a typical carat weight. This claim is supported by carat values below or equal to 1.0 since diamonds with a carat size of 0.4 showed significantly lower prices on the graph than diamonds with a carat value of 0.5. Above a carat value of 1.0, the amount of data for each carat decreases, making it difficult to draw assumptions from the graphs. The final and main claim Blue Nile makes is that the diamond cut is the variable that drives price. Based on the graph created, this claim cannot be supported. The chart shows that for every cut, except for the diamond cut that is specific to Blue Nile, the Astor Ideal, the median cost by cut was not that different as the cut increased. 
+But how do we choose the best diamond possible? Especially since diamonds may be a girl's best friend, but they do have a knack for giving your credit card a run for its money.
+Blue Nile, a prominent online jewelry retailer specializing in diamonds and engagement rings, makes several claims regarding diamond characteristics. However, our analysis of 1,214 diamonds from their website yielded mixed results. While the data supports the claim that higher carat weight enhances the visibility of diamond characteristics, such as clarity, for diamonds of Flawless (FL) clarity level, this claim does not hold true for diamonds of lower clarity levels. Similarly, the claim that diamond cut influences its color did not show strong trends in the data, except for Blue Nile's specific cut, the Astor Ideal. Additionally, contrary to Blue Nile's claim that diamond cut drives the price, we found that the median cost by cut was not significantly different for most cuts, except for the Astor Ideal.
 
-After concluding that carat has the most impact on the price of diamonds, we create a model to use carat value to predict the price of a diamond. We find that this model is adequate, confirming that carat has a high impact on the price of diamonds. 
+Nevertheless, our analysis did confirm that diamonds with better color tend to receive higher clarity grades, and diamond cut can indeed hide certain undesirable characteristics. However, the driving factor behind diamond price remains elusive.
+
+Digging deeper into Blue Nile's data, we discovered a significant relationship between carat size and price. Diamonds with a carat size of 0.4 showed significantly lower prices compared to those with a carat value of 0.5. Concluding from the analysis, for every 1% increase in carat size, the price of the diamond rose by approximately 2%. This means that even a small increase in weight, such as 1 milligram for a one carat (200 milligrams) diamond worth $10,000, could cause the price to jump by $200.
+
+So, in the dazzling world of diamonds, remember that size matters—because a bigger carat weight brings the bling that makes hearts sing!
+
 \newpage
 
 
@@ -47,7 +51,7 @@ After concluding that carat has the most impact on the price of diamonds, we cre
 
 ### Data Set
 
-This data set contains information of 1,214 diamonds available for sale on **[Blue Nile]** (http://www.bluenile.com), a renowned online diamond retailer. The data set encompasses various attributes of the diamonds, including carat weight, clarity, color, cut, and price. The data was collected from **Blue Nile's** website, capturing a diverse range of diamonds offered by the company.
+This data set contains information on 1,214 diamonds available for sale on **[Blue Nile]** (http://www.bluenile.com), a renowned online diamond retailer. The data set encompasses various attributes of the diamonds, including carat weight, clarity, color, cut, and price. The data was collected from **Blue Nile's** website, capturing a diverse range of diamonds offered by the company.
 
 **Blue Nile** is a prominent online jewelry retailer specializing in diamonds and engagement rings. Established in 1999, it has become a trusted destination for customers seeking high-quality diamonds at competitive prices. **Blue Nile** offers a wide selection of certified diamonds sourced from reputable suppliers around the world. 
 
