@@ -556,52 +556,7 @@ claim2plot1
 #         plot.tag = element_text(size = 8, hjust = 0, vjust = 0))
 ```
 
-### 2. Blue Nile claims that diamond cut influences diamond color. To see if there is a relationship between diamond cut and diamond color, we display bar graph comparing cut against color and a proportion tablein Figure X and Table X.
-
-```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
-
-claim3plot1 = ggplot(Data, aes(x = cut, fill = color))+ 
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
-        axis.text = element_text(size = 8, face = "bold"),
-        axis.title = element_text(size = 12, face = "bold"),
-        legend.title = element_text(size = 10, face = "bold")) +
-  geom_bar(position = "fill") +
-  labs(title = "Graph 6 \n Distribution of Color in Each Cut",
-       x = "Cut",
-       y = "Proportion of Diamonds",
-       fill = "Color") +
-  scale_fill_manual(values = c("#EB5F0C", "#DF1E43", "#009FDF", "#FDDA24", "#25CAD3", "#EF3F6B", "#62BB46")) +
-  theme(#plot.background = element_rect(fill = "white"),
-        panel.grid.major = element_line(color = "lightgray"))
-
-claim3plot1
-
-#Data %>%
-#   ggplot(aes(x = cut, fill = color))+ 
- #  geom_bar(position = "fill") +
-  #  theme(axis.text.x = element_text(angle = 0))+
-   # labs(x="Type of cut", y="Percentage of Color in Each Cut", 
-    #     title="Distribution of color in each cut")
-```
-
-#### Proportion of Color in Each Cut 
-```{r,echo=FALSE, warning=FALSE, message=FALSE}
-tab11 <- table(Data$cut, Data$color)
-tab11 = round(prop.table(tab11, 1) * 100, 2)
-#write.table(tab11,"tab11.txt", sep = ",")
-```
-
-|             | K | J    | I     | H     | G     | F     | E     | D     |
-|-------------|---|------|-------|-------|-------|-------|-------|-------|
-| Good        | 0 | 8.22 | 10.96 | 13.7  | 12.33 | 17.81 | 10.96 | 26.03 |
-| Very Good   | 0 | 7.59 | 11.26 | 10.99 | 19.37 | 18.59 | 17.28 | 14.92 |
-| Ideal       | 0 | 7.17 | 15.29 | 12.86 | 15.29 | 17.86 | 14.21 | 17.32 |
-| Astor Ideal | 0 | 10   | 15    | 5     | 10    | 35    | 10    | 15    |
-
-When looking at the graph, there is no distinct pattern of color in any category of cut. This claim is unable to be supported by the data set. 
-
-### 3. Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale. To confirm this claim, colorless diamonds (diamonds with color of grades D, E or F) should typically have high clarity. In order to visualize this claim, a bar graph comparing clarity against color and a proportion table in Figure X and Table Y were made.
+### 2. Blue Nile claims that more colorless diamonds are receiving higher grades along the diamond color and clarity scale. To confirm this claim, colorless diamonds (diamonds with color of grades D, E or F) should typically have high clarity. In order to visualize this claim, a bar graph comparing clarity against color and a proportion table in Figure X and Table Y were made.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
 
@@ -649,7 +604,7 @@ tab = round(prop.table(tab, 1) * 100, 2)
 
 When looking at the graph, it shows that of the highest clarity Flawless (FL) is 100% of diamonds are in the colorless category. It drops when looking at the IF column but there is no distinct pattern of this decreasing when looking at other clarity scores. The claim is supported by the data presented. 
 
-### 4. Blue Nile claims that diamond cut can hide flaws in other characteristics. To test this claim, diamond cut was analyzed against diamond clarity. From Blue Nile's claim, the quality of the diamond cut should be higher in diamonds with lower clarity. Based on these rankings and the claim, we should expect to see lower clarity ratings (SI and VS) associated with higher cut quality.
+### 3. Blue Nile claims that diamond cut can hide flaws in other characteristics. To test this claim, diamond cut was analyzed against diamond clarity. From Blue Nile's claim, the quality of the diamond cut should be higher in diamonds with lower clarity. Based on these rankings and the claim, we should expect to see lower clarity ratings (SI and VS) associated with higher cut quality.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 3.5, fig.width = 5,fig.align='center'}
 ggplot((Data) , aes(x=clarity, fill=cut))+
@@ -693,7 +648,7 @@ prop_clarity_cut <- round(prop.table(clarity_cut, 1) * 100, 2)
 From the bar chart we can see that the FL clarity rating only contain the diamond cuts Very Good and Ideal. The second highest clarity rating contain Good, Very Good, and Ideal diamond cuts. The clarity ratings SI2 to VS1 contain diamonds with all four cuts. From the bar chart, this claim appears to be supported by the data. For the purpose of looking at this data, the Astor Ideal cut is ignored in the discussion as there are not many diamond purchases with this cut giving very little data. For the SI2 clarity, 52.12% of the cuts are Ideal which is the second highest cut ranking overall. Except for the Astor Ideal cut, the Good cut has the lowest percentage at 8.48%. The SI1 clarity show similar results with, 61.73% of the cuts being Ideal and the cut of Good has the lowest percentage at 7.82%. For VS2, the Ideal cut is highest at 61.21% and Good was lowest at 6.07. Finally, the VS1 cut has the highest percentage of Ideal cuts at 58.37% and the Good cut was the lowest at 5.58%. From these proportions, the claim that better diamond cuts hide imperfections in the diamond appears to be true. 
 
 
-### 5. Blue Nile claims that diamond carat weights that are slightly less (0.4, 0.9, 1.4, 1.9) than typical carat values (0.5, 1.0, 1.5, or 2.0) cost significantly less than getting a typical carat weight.
+### 4. Blue Nile claims that diamond carat weights that are slightly less (0.4, 0.9, 1.4, 1.9) than typical carat values (0.5, 1.0, 1.5, or 2.0) cost significantly less than getting a typical carat weight.
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4, fig.width = 6, fig.align='center' }
 carat_.5 <- Data %>% 
@@ -772,7 +727,7 @@ patchwork7 + plot_annotation(tag_levels = c('1'), tag_prefix = 'Fig. ',
 
 From the data this claim is best supported by lower carat weights such as a half of a carat and a carat. The top two graphs show that a diamond with a carat weight of 0.4 does appear to have a significantly lower cost than diamonds with a carat weight of 0.5. This is further displayed by the second graph which shows a similar trend. The carat weight of 0.9 appears to have a lower price than a carat weight of 1.0. As the carat value continues to increase it becomes more difficult to make assumptions from the graph because there are fewer data points. Therefore for diamonds with a carat value greater than 1.0, it is difficult to see if the data actually supports Blue Nile's claim. As a result, we can say that we can assume their claim appears to be supported for carat values of 1.0 or less, but is inconclusive at higher carat weights. 
 
-### 6. The main claim Blue Nile makes is that diamond cut drives the price of the diamond. If this claim is true, we should expect to see an increase in median prices as the cut quality increases and the other variables of carat, color, and clarity should not show as much difference as quality or weight increases. 
+### 5. The main claim Blue Nile makes is that diamond cut drives the price of the diamond. If this claim is true, we should expect to see an increase in median prices as the cut quality increases and the other variables of carat, color, and clarity should not show as much difference as quality or weight increases. 
 
 ```{r,echo=FALSE, warning=FALSE, message=FALSE,fig.height = 4, fig.width = 6, fig.align='center'}
 
