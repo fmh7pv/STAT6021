@@ -1,0 +1,574 @@
+---
+title: "Project 2 Final: Group 10"
+authors: Brendan Puglisi, Hana Nur, Fadumo Hussein, Matt Rubin
+output: html_document
+date: "2023-07-12"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(MASS)
+data <-read.csv("kc_house_data.csv", header=TRUE)
+```
+
+```{r}
+data <- data %>% 
+  mutate(condition =cut(condition, breaks = c(-Inf, 3, Inf), labels = c("poor", "good"))) %>% 
+  mutate(yr_renovated =cut(yr_renovated, breaks = c(-Inf, 0, Inf), labels = c("no", "yes")))
+```
+
+```{r}
+data<-data[,-c(1,2,18,19)]
+
+set.seed(6021) ##for reproducibility to get the same split
+sample<-sample.int(nrow(data), floor(.50*nrow(data)), replace = F)
+train<-data[sample, ] ##training data frame
+test<-data[-sample, ]
+
+```
+
+
+## visualizations
+
+```{r}
+p1 <- ggplot(train, aes(x=price))+
+geom_histogram(bins = 35,fill="blue", color = 'black')+
+labs(x="Price ($)", title="(1) Histogram of Price")+
+theme(plot.title = element_text(size=8,hjust = 0.5))
+2e+06
+median(train$price)
+mean(train$price)
+## This is a histogram of the price variable. This graph shows the distribution of houses from 75000 to 7700000. This right skewed graphs shows us the the mean is greater than the median of the prices. The majority of homes ar between 75000 and 20000000. 
+```
+
+
+
+```{r}
+p2 <- ggplot(train,aes(x=sqft_living,y=price))+
+geom_point()+
+geom_smooth(method = "lm", se=FALSE)+
+labs(x="Square Foot of Living Space", y="Price ($)", title="(3) Relationship of Sq. Foot Living and Price")+
+theme(plot.title = element_text(size=8,hjust = 0.5))
+
+## A simple linear regression model helps to further explore the relationship between the price of a house and the
+## and the other predictors. The first step to fitting this model is to see if the relationship between the response variable
+## (price of a house) and a predictor variable (Square Foot of Living Space) meet the assumptions for a regression model
+## without any transformations. To make this assessment, a scatter plot, residual plot and ACF plot are create
+```
+
+```{r}
+# <- factor(schtyp, labels = c("private", "public"))
+p3 <- ggplot(train, aes(x=factor(bathrooms), y=price))+
+geom_boxplot(color="blue", outlier.color = "orange")+
+labs(x="Bathrooms", y="Price", title="(4) Distribution of Price Against Bathrooms")+
+theme(plot.title = element_text(size=8,hjust = 0.5))
+
+## This box plot shows the distribution of price against  the number of bathrooms in a home. As the number of bathrooms increases, the price does as well.There also seems to be more spread as the number of bathrooms increases. This generally is consistent idea  that as the more bathrooms you hvae in a home, the more expensive the home is. However, there are outliers in several box plots in the model. This raises the questions of what other factors are going into the cost of a house given the number of bathrooms a home has. 
+```
+
+```{r}
+p4 <- ggplot(train, aes(x=factor(bedrooms), y=price))+
+geom_boxplot(color="blue", outlier.color = "orange")+
+labs(x="Bedrooms", y="Price", title="(4) Distribution of Price Against Bedrooms")+
+theme(plot.title = element_text(size=8,hjust = 0.5))
+
+## This box plot shows the distribution of price against the number of bedrooms in a home. As the number of bedroom increases, the price does overall increase. There is an increase in spread as the number of bathrooms increases as well.This generally is consistent idea  that as the more bedrooms you have in a home, the more expensive the home is. However, there are outliers in several box plots in the model.  This also raises the questions of what other factors are going into the cost of a house given the number of bedroom a home has. 
+```
+
+```{r}
+p5 <- ggplot(train, aes(x=factor(floors), y=price))+
+geom_boxplot(color="blue", outlier.color = "orange")+
+labs(x="Floors", y="Price", title="(4) Distribution of Price Against Floors")+
+theme(plot.title = element_text(size=8,hjust = 0.5))
+
+## This graph is a box plot of the distribution of price against the number of floors of a house. As the number of floors increases there is an increase in price. However this model shows that several homes are outliers for each number of floors. Houses with 2 floors seem to have the most. The general expectaion of homes is that if the number of floors increase, then the price should increase as well. However, homes above 4e+06 primarily are 2 and 2.5 story homes.This raises the questions of what other factors are going into the cost of a house given the number of floor a home has. 
+```
+
+```{r}
+p6 <- train %>% 
+  mutate(waterfront =cut(waterfront, breaks = c(-Inf, 0, Inf), labels = c("No", "Yes"))) %>% 
+  ggplot(aes(fill = factor(view), x =factor(waterfront)))+
+  geom_bar(position = 'fill')+
+  labs(x="Waterfront", y="Proportion", title="(10) Comparing View Proportions vs Waterfront")+
+  theme(plot.subtitle = element_text(size=10,hjust = 0.5))
+ # facet_wrap(~carat)
+
+## This bar graph is . This graph generally makes sense as homes with a waterfront are going to be rated higher than home iwthout one. 
+```
+
+
+
+```{r}
+train %>% 
+  mutate(grade =cut(grade, breaks = c(-Inf, 7, Inf), labels = c("low", "high"))) %>% 
+  ggplot(aes(fill = factor(grade), x =factor(condition)))+
+  geom_bar(position = 'fill')+
+  labs(x="condition", y="Proportion", title="(10) Comparing Condition Proportions vs Grade")+
+  theme(plot.subtitle = element_text(size=10,hjust = 0.5))
+```
+
+```{r}
+library(GGally)
+
+
+
+gridExtra::grid.arrange(p1, p2, p4, p5,  ncol = 2, nrow = 2)
+
+#The graph in the top left of figure 1 is a histogram of the price variable. This graph shows the distribution of houses from 75000 to 7700000. This right skewed graph shows us that the mean is greater than the median of the prices. The majority of homes are between 75000 and 20000000. The figure on the top right is a  simple scatter plot that helps to further explore the relationship between the price of a house and the Square Foot of Living Space of a house. There is a strong positive correlation between both variables. We hope to explore this relationship in our project. The figure in the bottom left is a box plot of the distribution of price against the number of floors of a house. As the number of floors increases there is an increase in price. However this model shows that several homes are outliers for each number of floors. Houses with 2 floors seem to have the most. The general expectation of homes is that if the number of floors increase, then the price should increase as well. However, homes above $ 4,000,000 primarily are 2 and 2.5 story homes.This raises the questions of what other factors are going into the cost of a house given the number of floors a home has. The figure on the bottom right is a  box plot showing the distribution of price against the number of bedrooms in a home. As the number of bathrooms increases, the price does overall increase. There is an increase in spread as the number of bathrooms increases as well.This generally is a consistent idea that as the more bedrooms you have in a home, the more expensive the home is. However, there are outliers in several box plots in the model.  This also raises the questions of what other factors are going into. 
+
+gridExtra::grid.arrange(p3, p6,  ncol = 1, nrow = 2)
+
+#The top graph in figure 2 is a box plot that shows the distribution of price against  the number of bathrooms in a home. As the number of bathrooms increases, the price does as well.There also seems to be more spread as the number of bathrooms increases. This generally is a consistent idea  that as the more bathrooms you have in a home, the more expensive the home is. However, there are outliers in several box plots in the model. This raises the questions of what other factors are going into the cost of a house given the number of bathrooms a home has. The bottom graph in figure 2 is a bar graph comparing the view of homes with and without a waterfront. Homes with a waterfront have higher rated views than homes without one. Homes’ views without a waterfront primarily were rated as zero, and homes with a water front view were rated as four.  This graph generally makes sense as homes with a waterfront are going to have higher rated views than homes without one. 
+```
+
+
+```{r}
+##scatterplot matrix
+
+GGally::ggpairs(train[,c('price','sqft_living','sqft_lot', 'sqft_above','sqft_living15','sqft_lot15')])
+
+#The off-diagonal entries of the output give us the scatterplot and correlation between the corresponding pair of quantitative variables. Variables: Sqft_living and price,  Sqft_above and price, sqft_living_15 and price, sqft_living_15 and sqft_living,  sqft_lot15 and sqft_lot, sqft_living_15 and sqft_above all have high correlations with sqft_above and sqft_living having the highest (0.877). Most of the distribution is right skewed. This makes sense as our price histogram graph shows that a majority of the homes fell under the average. 
+```
+
+
+### Linear Regression Model Selection: regsubsets
+
+```{r}
+allreg2 <- leaps::regsubsets(price ~., data=train,  nbest=2)
+summary(allreg2)
+```
+
+```{r}
+coef(allreg2, which.max(summary(allreg2)$adjr2))
+```
+
+```{r}
+coef(allreg2, which.min(summary(allreg2)$cp))
+```
+
+```{r}
+coef(allreg2, which.min(summary(allreg2)$bic))
+```
+
+
+```{r}
+reg_subs <- lm(price ~ bedrooms+bathrooms+sqft_living+floors+waterfront+view+grade+yr_renovated+sqft_lot15, data = train)
+```
+
+```{r}
+MASS::boxcox(reg_subs)
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot(reg_subs)
+```
+
+
+```{r}
+
+reg_subs <- lm(log(price) ~ bedrooms+bathrooms+sqft_living+floors+waterfront+view+grade+yr_renovated+sqft_lot15, data = train)
+summary(reg_subs)
+```
+
+
+```{r}
+#drop bathrooms
+reg_subs <- lm(log(price) ~ bedrooms+sqft_living+floors+waterfront+view+grade+yr_renovated+sqft_lot15, data = train)
+
+test$price_log <- log(test$price)
+
+#mse = sum(y_test - y_test_observed)/n
+
+preds<-predict(reg_subs,newdata=test, type="response")
+
+mse <- (sum(test$price_log - preds)**2)/10807
+
+exp(mse)
+```
+
+### Linear Regression Step: both
+
+```{r}
+
+regnull<-lm(price~1, data=train)
+regfull<-lm(price~., data=train)
+step(regnull, scope=list(lower=regnull,upper=regfull), direction="both")
+
+```
+
+```{r}
+#previously knew log needed to be transformed.
+dt<-lm(log(price) ~ sqft_living + grade + yr_built + waterfront + 
+    view + bathrooms + bedrooms + sqft_lot15 + floors + condition + 
+    sqft_living15 + sqft_above + yr_renovated, data = train)
+
+preds<-predict(dt, type="response", newdata = test)
+
+#mse
+exp(sum((test$price_log-preds)**2)/10807)
+
+```
+
+
+### Linear Model Selection: Backwards and Forwards Selection
+
+We then use forward, backward, and stepwise regression to determine more options for our model.
+```{r}
+regnull <- lm(price~1, data=train)
+regfull <- lm(price~., data=train)
+forward<-step(regnull, scope=list(lower=regnull, upper=regfull), direction="forward")
+forward
+```
+
+```{r}
+#Same model as both and same as backwards.
+data.forward<-lm(formula = log(price) ~ sqft_living + grade + yr_built + waterfront + 
+    view + bathrooms + bedrooms + sqft_lot15 + floors + condition + 
+    sqft_living15 + sqft_above + yr_renovated, data = train)
+
+
+preds<-predict(data.forward,newdata=test)
+
+mse<-sum((test$price_log-preds)^2)/nrow(test)
+exp(mse)
+
+```
+
+Same MSE out of backwards, forwards and both, better than reg subsets though. let's go with forward selection model
+
+
+```{r}
+
+f_stat<-((1.1635e+12+2.7199e+11+2.7763e+11)/3)/(4.9611e+14/10792)
+f_stat
+1-pf(f_stat, 3, 10792)
+qf(1-0.05, 3, 10792)
+
+```
+
+
+$H_0: \beta_{sqft-living15}=\beta_{yr-renovated}=\beta_{sqft-above}=0, H_a: \beta_{sqft-living15}=\beta_{yr-renovated}=\beta_{sqft-above}\ne0$
+The null hypothesis is that all coefficients for the predictors we wish to drop are zero, meaning they can be dropped. The alternative hypothesis is that the coefficients of the predictors are non-zero, meaning they are significant and cannot be dropped.
+
+We conducted a general linear F-test to determine if we can drop the predictors sqft_living15, yr_renovated, and sqft_above. The F statistic, which was determined to be 12.42197, is greater than the critical value, 2.605732, and the p-value, 4.167185e-08, is near zero. Therefore, we can reject the null hypothesis, and the data supports the alternative hypothesis. This means we cannot drop these predictors and use the reduced model.
+
+```{r}
+
+sort(faraway::vif(data.forward))
+
+```
+Because sqft_living has the highest VIF, we will keep this predictor and remove the predictors that are highly correlated with sqft_living to remove multicollinearity in the predictors. The predictors sqft_above and sqft_living15 are both highly correlated with sqft_living, so we remove both sqft_above and sqft_living15 from the model.
+
+
+
+```{r}
+data.forwardred<-lm(formula = log(price) ~ sqft_living + grade + yr_built + waterfront + 
+    view + bathrooms + bedrooms + sqft_lot15 + floors + condition + 
+    yr_renovated, data = train)
+summary(data.forwardred)
+#anova(data.forwardred)
+acf(data.forwardred$residuals, main="ACF Plot of Residuals with ystar")
+
+```
+```{r}
+summary(data.forwardred)
+```
+
+$\hat{y}=21.57+0.0001617x_{sqft-living}+0.2252x_{grade}-0.005502x_{yr-built}+0.2764x_{waterfront}+0.05068x_{view}+0.08522x_{bathrooms}-0.02395x_{bedrooms}-0.000000264x_{sqft_lot15}+0.08644x_{floors}+0.04866I_{condition}+0.01858I_{yr-renovated}$
+
+```{r}
+sort(faraway::vif(data.forwardred))
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot(data.forwardred)
+acf(data.forwardred$residuals, main="ACF Plot of Residuals")
+preds<-predict(data.forwardred,newdata=test)
+mse<-sum((test$price_log-preds)^2)/nrow(test)
+
+
+exp(mse)
+```
+
+```{r}
+hii<-lm.influence(data.forwardred)$hat ##leverages
+ext.student<-rstudent(data.forwardred) ##ext studentized res
+n<-nrow(train)
+p<-12
+
+sig<-hii[hii>2*p/n]
+```
+
+
+Many minorly significant DFBETAS
+```{r}
+DFBETAS<-dfbetas(data.forwardred)
+dfbetas.sig<-DFBETAS[abs(DFBETAS)>2/sqrt(n)]
+dfbetas.sig
+```
+
+Many minorly significant DFFITS
+```{r}
+DFFITS<-dffits(data.forwardred)
+dffits.sig<-DFFITS[abs(DFFITS)>2*sqrt(p/n)]
+sort(abs(dffits.sig))
+```
+
+All observations have Cook's distance below 0.25.
+```{r}
+COOKS<-cooks.distance(data.forwardred)
+COOKS[COOKS>0.1]
+sqft_living<-lm(log(price)~sqft_living, data=train)
+summary(sqft_living)
+par(mfrow=c(2,2))
+plot(sqft_living)
+```
+
+
+
+
+# Logistic Regression
+
+Since we will use all variables in our model, let's change the zipcode variable to be categorical. We will split this variable between the top 20 wealthy zipcodes and the rest being non-wealthy. As well mutate grade so we can use logistic regression with it, cut it at 7.
+```{r}
+zips = c('98072','98027','98119','98029','98052','98005', '98177','98065','98105','98199','98006','98053','98074','98033','98075','98112','98004','98040','98039')
+
+train <- train %>% 
+  mutate(zipcode = fct_collapse(factor(zipcode),
+                               "Wealthy" = zips,
+                               other_level = "Not_Wealthy")) %>% 
+  mutate(grade =cut(grade, breaks = c(-Inf, 7, Inf), labels = c("low", "high")))
+```
+
+
+
+### Logistic Visualizations
+
+```{r}
+ggplot(train,aes(x=sqft_living, color=grade)) +
+  geom_density()+
+  labs(y="Density",x="Living Space", title="Density Plot of Grade by Living Space")
+
+```
+
+```{r}
+ggplot(train,aes(color=grade, x=zipcode)) +
+  geom_density()+
+  labs(y="Density",x="Zip Code", title="Density Plot of Grade by Zip Code")
+```
+
+
+```{r}
+ggplot(train,aes(fill=grade, x=waterfront)) +
+  geom_bar(position="fill")+
+  labs(y="Proportion",x="Waterfront", title="Proportion of Grade by Waterfront Status")
+
+```
+
+```{r}
+ggplot(train,aes(x=condition, fill=grade)) +
+  geom_bar(position="fill")+
+  labs(y="Proportion",x="Condition", title="Proportion of Grade by Condition")
+
+```
+
+```{r}
+ggplot(train, aes(x=grade, y=sqft_living))+
+  geom_boxplot(color="blue", outlier.color = "orange")+
+  labs(x="Grade", y="Living Space", title="(4) Distribution of Grade Against Living Space")+
+  theme(plot.title = element_text(size=8,hjust = 0.5))
+
+```
+
+```{r}
+ggplot(train,aes(y=price, x=yr_built, color=grade)) +
+  geom_point()+
+  geom_smooth() +
+  labs(y="Price",x="Year Built", title="Plot of Price by Year Built and Grade")
+
+```
+
+
+
+Let us check the correlations between the quantitative predictors in order to better understand their relationships
+```{r}
+round(cor(train[,c(1,4,5,11,12,16,17, 2,3, 6)]),3)
+```
+
+
+### Logistic Regression Model Building
+
+In order to answer our logistic regression question of predicting house grade, we will use manual model building and hypothesis testing to find the optimal model. First let's look at the logistic regression model with all predictors included and then we will take insignificant and multicollinear coefficients out as needed.
+```{r}
+result<-glm(grade~., family=binomial, data=train)
+summary(result)
+```
+
+Given the visualizations, we see that all the predictors may influence the grade of a house. Let's use the glm() function in order to create a logistic regression with all of our variables. 
+
+As shown by the model summary a few predictors have highly insignificant coefficients: sqft_lot, condition and zipcode. This is not surprising since we have so many variables in the model there is bound to be several that are correlated resulting in insignificant results. For example, sqft_lot has a relatively high correlation to sqft_lot15, meaning we would only potential need one of them in our model. As well insignificant values could also simply signify that the predictor variable is not related to our target of grade. Either way let's drop these three variables along with sqft_basement since it has NA's for its coefficients potentially due to multicollinearity. 
+
+It is also important to note the warning of "fitted probabilities numerically 0 or 1" potentially indicating perfect seperation in our data. However since based on our question we are simply using logistic regression for prediction, we can ignore this warning for now.
+
+
+```{r}
+reduced<-glm(grade~.-sqft_basement-sqft_lot-condition-zipcode, family=binomial, data=train)
+```
+
+
+### Likelihood ratio tests
+
+In likelihood ratio tests the test statistic is the difference in the deviances of the two models. 
+
+The null hypothesis supports dropping the insignificant predictors, and the alternative hypothesis supports not
+dropping the 4 predictors
+
+H0: sqft_basement = sqft_lot = condition = zipcode = 0
+Ha: at least one of the coefficients in the null hypothesis is not 0.
+
+```{r}
+TS<-reduced$deviance-result$deviance
+TS
+```
+
+```{r}
+1-pchisq(TS,4)
+```
+
+The ∆G2 test statistic is 1.813891, and is compared with a chi-squared distribution with 4 degrees of freedom since the degrees of freedom is equal to the number of terms we are dropping. The p-value is 0.7699399, meaning we fail to reject the null hypothesis. The data do not support using the full model with all the predictors, so we drop sqft_basement, sqft_lot, condition, and zipcode.
+
+
+Now let's also assess variance inflation factors (VIFs) in logistic regression in order to potentially identify multicollinearity before we drop any variables.
+
+```{r}
+faraway::vif(reduced)
+```
+
+Due to the sheer number of variables we have in our model it is not the least bit surprising that we have significant evidence of multicollinearity. Now we will attempt to manipulate and drop variables from our model in order to reduce multicollinearity as well as increase significance of the variables present. Due to these extremely high levels of multicollinearity, the coefficients and p-values for these terms cannot necessarily be trusted and as a result we must reduce this multicollinearity in our model to avoid high variance with the estimated coefficients. As well, reducing the overall parameter count will help prevent against overfitting.
+
+Analyzing the variables from the previous model, we notice that price and sqft_living have massive VIF values. Using our background knowledge of real estate we recognize that both of these variables are highly correlated with several of the variables in the model as well as each other. For example as sqft_above increases, sqft_living will also increase and corresponding price of a home increases as well. In light of this we can either drop every variable related to price and sqft_living or simply drop price and sqft_living. Keeping our prediction variable of grade in mind, we decided to drop price and sqft_living as we think the other variables might give more insight into the actual design and structure of the house at hand which are directly related to its grade.
+
+Now we will drop sqft_above since the variable will be better represented by floors in which it is related to. We also drop view for similar reasons since waterfront is a highly correlated variable to it. Similarly we choose to keep bedrooms over bathrooms as bedrooms will represent this variable since they are typically related. Also we will drop sqft_living15 and sqft_lot15 as these are characteristics of other houses that will not help us predict the grade of the particular house we are looking at.
+
+Now we will build our final model to predict the grade of a house, based on the predictors bedrooms, floors, waterfront, yr_renovated, and yr_built.
+
+```{r}
+
+reduced_2<-glm(grade~bedrooms+floors+waterfront+yr_renovated+yr_built ,family=binomial, data=train)
+
+```
+
+```{r}
+summary(reduced_2)
+faraway::vif(reduced_2)
+```
+
+Now we see all of our VIFS are between 5 and 10, meaning they show some signs of multicollinearity but are not necessarily identified as having a high level of it. Since our question revolves around predictions we can move forward with these predictors and resulting VIF levels since predictions can remain unbiased even in the presence of multicollinearity. Also it is important to note that 2 out of 5 of our predictors, waterfront and yr_renovated, are binary categorical variables so VIF's are not applicable to them.
+
+
+### Coefficient Interpretation
+
+Let us take a look at the estimated coefficients for our reduced model:
+```{r}
+summary(reduced_2)
+```
+
+So our logistic regression equation is: 
+
+$log( πhat/1 − πhat)= -53.865248 + 0.573404(bedrooms) + 1.249434(floors)+ 1.594117(waterfront) + 0.993799(I1) + 0.025331(yrbuilt)$
+Where I1 = 1 if the home was ever renovated.
+
+Given that all these coefficients are positive, bedrooms, floors, yr_built, waterfront, and a renovated home are
+associated with higher likelihood of having a high grade.
+
+The odds of a high grade house are multiplied by exp(0.573404) = 1.774296 for each additional bedroom, when
+controlling for number of floors, waterfront, renovation and year built.
+
+The odds of a high grade house are multiplied by exp(1.249434) = 3.488368 for each additional floor, when
+controlling for number of bedrooms, waterfront, renovation and year built.
+
+The odds of a high grade house are multiplied by exp(0.025331) = 1.025655 for each further year it was built, when
+controlling for number of bedrooms, waterfront, renovation and floors.
+
+The odds of a high grade house for when it has been renovated is exp(0.993799) = 2.701478 times the odds for a house that has not been renovated, when controlling for number of bedrooms, waterfront, year built, and floors.
+
+As well we see that all of our variables are highly significant, have small standard errors, and have the correct sign for their coefficients proving our model is useful and that it lacks high multicollinearity.
+
+
+
+### Predictions
+
+Now Let's use the model to estimate the predicted probabilities of the test data, and then use a threshold of 0.5 to classify the test data.
+
+```{r}
+#probabilities
+preds<-predict(reduced_2,newdata=test, type="response")
+head(preds)
+```
+
+
+### Confusion Matrix
+
+```{r}
+test <- test %>% 
+  mutate(grade =cut(grade, breaks = c(-Inf, 7, Inf), labels = c("low", "high")))
+table(test$grade, preds>0.5	)
+```
+Based On the Confusion Matrix above, the true negative (TN) is 4486, these are houses that were classified as being low grade
+by the model, and truly were low grade. The false positive (FP) is 1222, these are houses that are classified as being high grade, but were truly low grade. The false negative (FN) is 1501, these are houses that were really high grade but were incorrectly classified as low grade. The true positive (TP) given by the model is 3598, which are the number of houses that are high grade and classified as high grade correctly.
+
+
+### Metrics for confusion matrices
+```{r}
+error = (1222+1501)/10807
+accuracy =(4486+3598)/10807
+Fpr = 1222/(4486+1222)
+fnr = 1501/(1501+3598)
+sensitivity = 3598/(3598+1501)
+specificity = 4486/(4486+1222)
+precision = 3598/(1222+3598)
+```
+
+
+The Error Rate of this model and threshold is 0.2519663, meaning 25% of the classifications were incorrect
+The Accuracy of this model and threshold is 0.7480337, meaning 75% of the classifications were correct
+The False Positive Rate (FPR) is 0.2140855, meaning 21% of the true low grades were incorrectly classified as high grades.
+The False negative rate (FNR) is 0.2943714, meaning 29% of the true high grades were incorrectly classified as low grades.
+The Sensitivity, also known as the true positive rate, is 0.7056286, meaning 71% of the true high grades were correctly classified as high grade.
+The Specificity, also known as the true negative rate, is 0.7859145, meaning 79% of the true low grades were correctly classified as low grades
+The Precision of this model and threshold is 0.746473. Meaning 74.6% of the houses classified as high grade were truly high grade.
+
+In our question neither of the two errors are more consequential than the other, as we simply want to
+focus on reducing the error rate. Therefore we will stick with a threshold of 0.5 in order to minimize the error rate.
+
+
+### ROC
+
+```{r}
+library(ROCR)
+##produce the numbers associated with classification table
+rates<-ROCR::prediction(preds, test$grade, label.ordering = c("low", "high"))
+##store the true positive and false positive rates
+roc_result<-ROCR::performance(rates,measure="tpr", x.measure="fpr")
+##plot ROC curve and overlay the diagonal line for random guessing
+plot(roc_result, main="ROC Curve for Reduced Model")
+lines(x = c(0,1), y = c(0,1), col="red")
+points(x=Fpr, y=sensitivity, col="blue", pch=16)
+```
+
+Our ROC curve is clearly above the diagonal meaning our model does better than random guessing. Therefore our model does in fact use information from the data to make its classification. The blue dot represents the sensitivty (TPR) and FPR of our logistic regression with a threshold of 0.5 from our confusion matrix above. Here it is evident that TPR is not equal to FPR so it is not classifying at random when dealing with grade observartions of houses in King County Washington.
+
+### AUC
+
+```{r}
+##compute the AUC
+auc<-performance(rates, measure = "auc")
+auc@y.values
+```
+
+The area under the curve (AUC) of our model is 0.8191738. Since the AUC is larger than 0.5 and closer to 1 we know that our model does better than random guessing in classifying observations of house grade between low and high.
